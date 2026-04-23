@@ -37,25 +37,106 @@
   .bg-sky {
     position: fixed; inset: 0; z-index: 0;
     background:
-      radial-gradient(ellipse 120% 60% at 50% -5%,  rgba(201,168,76,0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 80%  50% at 15% 110%,  rgba(80,20,140,0.25) 0%, transparent 55%),
-      radial-gradient(ellipse 60%  40% at 85% 90%,   rgba(180,50,100,0.12) 0%, transparent 50%),
-      linear-gradient(180deg, #06061A 0%, #0A0828 40%, #10082A 100%);
+      /* warm horizon city-light haze */
+      radial-gradient(ellipse 110% 22% at 50% 104%, rgba(210,110,30,0.22) 0%, rgba(150,35,140,0.11) 45%, transparent 68%),
+      /* magenta-violet nebula upper-right */
+      radial-gradient(ellipse 52% 46% at 93% 18%, rgba(210,38,130,0.20) 0%, rgba(140,15,90,0.09) 52%, transparent 72%),
+      /* deep indigo nebula left */
+      radial-gradient(ellipse 62% 52% at 5% 58%, rgba(100,22,220,0.26) 0%, rgba(55,8,160,0.13) 52%, transparent 72%),
+      /* teal aurora band upper-mid */
+      radial-gradient(ellipse 95% 32% at 32% 24%, rgba(8,185,175,0.12) 0%, rgba(20,80,200,0.06) 55%, transparent 72%),
+      /* gold moon-light glow */
+      radial-gradient(ellipse 38% 30% at 73% 11%, rgba(201,168,76,0.17) 0%, rgba(180,100,20,0.06) 55%, transparent 72%),
+      /* indigo-midnight right-mid */
+      radial-gradient(ellipse 48% 38% at 90% 62%, rgba(50,12,170,0.16) 0%, transparent 58%),
+      /* soft rose bloom center-low */
+      radial-gradient(ellipse 70% 28% at 55% 80%, rgba(180,40,100,0.10) 0%, transparent 65%),
+      /* deep velvet base */
+      linear-gradient(180deg, #000510 0%, #030820 10%, #06092A 26%, #070830 50%, #110530 72%, #1E0835 100%);
   }
   .bg-skyline {
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 1;
-    pointer-events: none; height: 260px;
+    pointer-events: none; height: 310px;
+  }
+  /* ── AURORA ─────────────────────────────────────────────── */
+  .bg-aurora { position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .aurora-1, .aurora-2, .aurora-3, .aurora-4 {
+    position:absolute; border-radius:50%; filter:blur(58px);
+  }
+  .aurora-1 {
+    width:90vw; height:42vh; top:3%; left:-10%;
+    background:radial-gradient(ellipse, rgba(16,210,190,0.09) 0%, rgba(60,16,210,0.055) 52%, transparent 80%);
+    animation:awave 26s ease-in-out infinite alternate;
+  }
+  .aurora-2 {
+    width:78vw; height:38vh; top:7%; right:-10%;
+    background:radial-gradient(ellipse, rgba(200,28,160,0.08) 0%, rgba(65,12,210,0.05) 52%, transparent 80%);
+    animation:awave 34s ease-in-out infinite alternate-reverse;
+  }
+  .aurora-3 {
+    width:105vw; height:24vh; top:26%; left:2%;
+    background:radial-gradient(ellipse, rgba(14,130,215,0.07) 0%, rgba(30,20,180,0.04) 52%, transparent 72%);
+    animation:awave 21s ease-in-out infinite alternate; animation-delay:-11s;
+  }
+  .aurora-4 {
+    width:60vw; height:30vh; top:14%; left:22%;
+    background:radial-gradient(ellipse, rgba(180,60,220,0.07) 0%, rgba(80,20,200,0.04) 52%, transparent 76%);
+    animation:awave 28s ease-in-out infinite alternate-reverse; animation-delay:-6s;
+  }
+  @keyframes awave {
+    0%   { opacity:.30; transform:scale(1)   translateX(0)    translateY(0); }
+    33%  { opacity:.90; transform:scale(1.09) translateX(2.5%) translateY(-1.2%); }
+    66%  { opacity:.55; transform:scale(.93) translateX(-1.8%) translateY(1.1%); }
+    100% { opacity:.28; transform:scale(1.05) translateX(1.5%) translateY(.6%); }
+  }
+  /* ── MOON ───────────────────────────────────────────────── */
+  .moon {
+    position:fixed; z-index:0; pointer-events:none;
+    width:50px; height:50px; top:9%; right:12%;
+    border-radius:50%;
+    background:radial-gradient(circle at 36% 34%, #FFFDE8 0%, #FDE89A 35%, #E0B840 62%, #9B7010 85%, transparent 100%);
+    box-shadow:0 0 22px rgba(201,168,76,.42), 0 0 65px rgba(201,168,76,.16), 0 0 120px rgba(201,168,76,.06);
+    animation:moondrift 48s ease-in-out infinite alternate;
+  }
+  .moon::before {
+    content:''; position:absolute; inset:-32px; border-radius:50%;
+    background:radial-gradient(circle, rgba(201,168,76,.13) 0%, transparent 70%);
+  }
+  .moon::after {
+    content:''; position:absolute; inset:-70px; border-radius:50%;
+    background:radial-gradient(circle, rgba(201,168,76,.05) 0%, transparent 60%);
+  }
+  @keyframes moondrift {
+    from { transform:translateY(0) rotate(0deg); }
+    to   { transform:translateY(-11px) rotate(3deg); }
   }
 
   /* ── STARS ──────────────────────────────────────────────── */
   .stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
   .star {
-    position: absolute; background: #fff; border-radius: 50%;
+    position: absolute; border-radius: 50%;
     animation: twinkle ease-in-out infinite;
   }
+  /* larger cross/diamond stars */
+  .star.big::before, .star.big::after {
+    content:''; position:absolute; background:inherit; border-radius:1px;
+  }
+  .star.big::before { width:1px; height:280%; top:-90%; left:calc(50% - .5px); opacity:.5; }
+  .star.big::after  { width:280%; height:1px; left:-90%; top:calc(50% - .5px); opacity:.5; }
   @keyframes twinkle {
-    0%,100% { opacity: 0.12; transform: scale(1); }
-    50%     { opacity: 0.95; transform: scale(1.5); }
+    0%,100% { opacity: 0.08; transform: scale(1); }
+    50%     { opacity: 1;    transform: scale(1.65); }
+  }
+  /* shooting star */
+  .shooting-star {
+    position:fixed; z-index:1; pointer-events:none;
+    height:1.5px; border-radius:2px;
+    background:linear-gradient(90deg,rgba(255,255,220,.95),rgba(255,255,220,.4),transparent);
+    animation:shoot linear forwards;
+  }
+  @keyframes shoot {
+    from { opacity:1; transform:translateX(0) translateY(0); }
+    to   { opacity:0; transform:translateX(var(--sx)) translateY(var(--sy)); }
   }
 
   /* ── BUBBLES ────────────────────────────────────────────── */
@@ -345,37 +426,123 @@
 
 <!-- Background layers -->
 <div class="bg-sky"></div>
+<div class="bg-aurora"><div class="aurora-1"></div><div class="aurora-2"></div><div class="aurora-3"></div><div class="aurora-4"></div></div>
+<div class="moon"></div>
 <div class="stars" id="stars"></div>
 
 <!-- Paris skyline SVG -->
-<svg class="bg-skyline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax meet">
+<svg class="bg-skyline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 310" preserveAspectRatio="xMidYMax meet">
   <defs>
+    <!-- Fill: dark semi-transparent gold -->
     <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="#C9A84C" stop-opacity="0.2"/>
-      <stop offset="100%" stop-color="#C9A84C" stop-opacity="0.03"/>
+      <stop offset="0%"   stop-color="#C9A84C" stop-opacity="0.30"/>
+      <stop offset="55%"  stop-color="#6B3A10" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#100520" stop-opacity="0.08"/>
     </linearGradient>
+    <!-- Stroke: bright cream-gold outlines -->
+    <linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#FFF8D0" stop-opacity="0.80"/>
+      <stop offset="45%"  stop-color="#F0D060" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#C9A84C" stop-opacity="0.12"/>
+    </linearGradient>
+    <!-- Warm ground glow -->
+    <linearGradient id="gg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#C9703C" stop-opacity="0.00"/>
+      <stop offset="55%"  stop-color="#C06828" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#7A2808" stop-opacity="0.28"/>
+    </linearGradient>
+    <!-- Seine water shimmer -->
+    <linearGradient id="rg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="transparent"/>
+      <stop offset="20%"  stop-color="#C9A84C" stop-opacity="0.07"/>
+      <stop offset="50%"  stop-color="#F0D060" stop-opacity="0.13"/>
+      <stop offset="80%"  stop-color="#C9A84C" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <!-- Soft outline glow filter -->
+    <filter id="gf" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Stronger hero glow for Eiffel -->
+    <filter id="ef" x="-30%" y="-8%" width="160%" height="118%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
-  <!-- Left buildings -->
-  <path fill="url(#sg)" d="M0,260 L0,200 L30,200 L30,220 L50,220 L50,180 L70,180 L70,160 L80,155 L90,160 L90,180 L110,180 L110,200 L130,200 L130,210 L150,210 L150,190 L165,190 L165,210 L185,210 L185,260 Z"/>
-  <!-- Notre Dame suggestion -->
-  <path fill="url(#sg)" d="M200,260 L200,215 L220,215 L220,200 L235,185 L235,172 L238,162 L240,148 L242,162 L242,172 L245,185 L260,200 L260,215 L280,215 L280,260 Z"/>
-  <!-- Mid-left cluster -->
-  <path fill="url(#sg)" d="M320,260 L320,230 L340,230 L340,215 L360,215 L360,200 L375,190 L380,175 L385,190 L400,200 L400,215 L420,215 L420,230 L440,230 L440,260 Z"/>
-  <!-- Sacre Coeur domes -->
-  <path fill="url(#sg)" d="M480,260 L480,230 L496,230 L496,218 Q503,202 510,218 L510,205 Q517,188 524,205 L524,218 Q531,202 538,218 L538,230 L554,230 L554,260 Z"/>
-  <!-- Eiffel Tower - CENTER HERO -->
-  <path fill="url(#sg)" d="
-    M705,260 L702,235 L685,235 L676,205 L670,180 L666,158
-    L662,138 L659,116 L657,94 L655.5,72 L654,50
-    L652.5,34 L651,18 L650,6
-    L649,18 L647.5,34 L646,50
-    L644.5,72 L643,94 L641,116 L638,138
-    L634,158 L630,180 L624,205 L615,235 L598,235 L595,260 Z
-  "/>
-  <!-- Radio/TV tower right of Eiffel -->
-  <path fill="url(#sg)" d="M790,260 L790,230 L793,220 L794,200 L795,180 L796,160 L795.5,140 L795,120 L794.5,100 L794,80 L793.5,60 L793,50 L792.5,60 L792,80 L791.5,100 L791,120 L790.5,140 L790,160 L789,180 L790,200 L791,220 L791,230 L791,260"/>
+
+  <!-- Ground city-light warmth -->
+  <rect x="0" y="230" width="1440" height="80" fill="url(#gg)"/>
+
+  <!-- ── FILLS ──────────────────────────────────── -->
+  <path fill="url(#sg)" d="M0,310 L0,250 L25,250 L25,268 L45,268 L45,228 L65,228 L65,208 L75,202 L85,208 L85,228 L105,228 L105,250 L122,250 L122,238 L140,238 L140,255 L162,255 L162,235 L178,235 L178,255 L198,255 L198,310 Z"/>
+  <path fill="url(#sg)" d="M210,310 L210,262 L228,262 L228,248 L242,232 L242,218 L245,208 L248,194 L250,178 L252,194 L255,208 L258,218 L258,232 L272,248 L272,262 L292,262 L292,310 Z"/>
+  <path fill="url(#sg)" d="M330,310 L330,278 L350,278 L350,262 L368,262 L368,245 L382,234 L388,218 L394,234 L408,245 L408,262 L428,262 L428,278 L448,278 L448,310 Z"/>
+  <path fill="url(#sg)" d="M488,310 L488,278 L504,278 L504,264 Q512,246 520,264 L520,250 Q528,232 535,250 L535,264 Q543,246 551,264 L551,278 L568,278 L568,310 Z"/>
+  <!-- Eiffel Tower fill -->
+  <path fill="url(#sg)" d="M715,310 L712,283 L694,283 L685,252 L679,226 L675,204 L671,182 L668,160 L666,138 L664,115 L662,92 L660.5,70 L659,50 L657.5,34 L656,18 L655,8 L654,18 L652.5,34 L651,50 L649.5,70 L648,92 L646,115 L644,138 L641,160 L638,182 L635,204 L631,226 L625,252 L616,283 L598,283 L595,310 Z"/>
+  <!-- TV antenna -->
+  <path fill="rgba(201,168,76,0.10)" d="M803,310 L802,268 L802.6,100 L803,60 L803.4,100 L804,268 L804,310 Z"/>
   <!-- Right cluster -->
-  <path fill="url(#sg)" d="M850,260 L850,220 L870,220 L870,200 L895,200 L895,180 L905,175 L915,180 L915,200 L935,200 L935,185 L950,185 L950,200 L970,200 L970,210 L990,210 L990,220 L1010,220 L1010,200 L1030,200 L1030,215 L1050,215 L1060,210 L1070,215 L1090,215 L1090,230 L1110,230 L1110,215 L1130,215 L1130,200 L1150,190 L1160,178 L1170,190 L1180,200 L1200,200 L1200,215 L1220,215 L1220,230 L1260,230 L1260,215 L1300,215 L1300,200 L1330,200 L1330,210 L1360,210 L1360,220 L1440,220 L1440,260 Z"/>
+  <path fill="url(#sg)" d="M858,310 L858,268 L878,268 L878,248 L902,248 L902,226 L912,220 L922,226 L922,248 L942,248 L942,234 L958,234 L958,248 L978,248 L978,258 L998,258 L998,268 L1018,268 L1018,248 L1038,248 L1038,262 L1058,262 L1068,258 L1078,262 L1098,262 L1098,278 L1118,278 L1118,260 L1138,260 L1138,245 L1158,234 L1168,222 L1178,234 L1188,245 L1208,245 L1208,262 L1228,262 L1228,278 L1268,278 L1268,260 L1308,260 L1308,245 L1338,245 L1338,258 L1368,258 L1368,268 L1440,268 L1440,310 Z"/>
+
+  <!-- ── OUTLINES with glow ──────────────────── -->
+  <g filter="url(#gf)" stroke="url(#sg2)" stroke-width="0.75" fill="none" stroke-linejoin="round" stroke-linecap="round" opacity="0.88">
+    <path d="M0,310 L0,250 L25,250 L25,268 L45,268 L45,228 L65,228 L65,208 L75,202 L85,208 L85,228 L105,228 L105,250 L122,250 L122,238 L140,238 L140,255 L162,255 L162,235 L178,235 L178,255 L198,255"/>
+    <path d="M210,310 L210,262 L228,262 L228,248 L242,232 L242,218 L245,208 L248,194 L250,178 L252,194 L255,208 L258,218 L258,232 L272,248 L272,262 L292,262"/>
+    <path d="M330,310 L330,278 L350,278 L350,262 L368,262 L368,245 L382,234 L388,218 L394,234 L408,245 L408,262 L428,262 L428,278 L448,278"/>
+    <path d="M488,310 L488,278 L504,278 L504,264 Q512,246 520,264 L520,250 Q528,232 535,250 L535,264 Q543,246 551,264 L551,278 L568,278"/>
+    <path d="M858,310 L858,268 L878,268 L878,248 L902,248 L902,226 L912,220 L922,226 L922,248 L942,248 L942,234 L958,234 L958,248 L978,248 L978,258 L998,258 L998,268 L1018,268 L1018,248 L1038,248 L1038,262 L1058,262 L1068,258 L1078,262 L1098,262 L1098,278 L1118,278 L1118,260 L1138,260 L1138,245 L1158,234 L1168,222 L1178,234 L1188,245 L1208,245 L1208,262 L1228,262 L1228,278 L1268,278 L1268,260 L1308,260 L1308,245 L1338,245 L1338,258 L1368,258 L1368,268 L1440,268"/>
+  </g>
+
+  <!-- ── EIFFEL HERO OUTLINE ─────────────────── -->
+  <g filter="url(#ef)" stroke="#FFF8D0" stroke-width="0.95" fill="none" stroke-linejoin="round" stroke-linecap="round" opacity="0.78">
+    <path d="M715,310 L712,283 L694,283 L685,252 L679,226 L675,204 L671,182 L668,160 L666,138 L664,115 L662,92 L660.5,70 L659,50 L657.5,34 L656,18 L655,8 L654,18 L652.5,34 L651,50 L649.5,70 L648,92 L646,115 L644,138 L641,160 L638,182 L635,204 L631,226 L625,252 L616,283 L598,283 L595,310"/>
+  </g>
+
+  <!-- Eiffel cross-beams -->
+  <g stroke="rgba(240,208,96,0.28)" stroke-width="0.55" fill="none">
+    <line x1="614" y1="283" x2="696" y2="283"/>
+    <line x1="626" y1="258" x2="684" y2="258"/>
+    <line x1="636" y1="232" x2="674" y2="232"/>
+    <line x1="643" y1="204" x2="667" y2="204"/>
+    <line x1="648" y1="180" x2="662" y2="180"/>
+    <line x1="651" y1="158" x2="659" y2="158"/>
+    <line x1="653" y1="136" x2="657" y2="136"/>
+  </g>
+
+  <!-- Eiffel beacon light -->
+  <circle cx="655" cy="8" r="2.8" fill="#FFF8D0" opacity="0.75">
+    <animate attributeName="opacity" values="0.75;0.1;0.95;0.1;0.75" dur="3.2s" repeatCount="indefinite"/>
+    <animate attributeName="r" values="2.8;1.6;3.2;1.6;2.8" dur="3.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="655" cy="8" r="10" fill="rgba(255,248,208,0.13)">
+    <animate attributeName="opacity" values="0.5;0;0.6;0;0.5" dur="3.2s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Building window lights -->
+  <g fill="rgba(255,220,100,0.55)">
+    <rect x="52" y="236" width="3" height="2" rx="0.5"/>
+    <rect x="60" y="220" width="3" height="2" rx="0.5"/>
+    <rect x="73" y="213" width="3" height="2" rx="0.5"/>
+    <rect x="128" y="244" width="3" height="2" rx="0.5"/>
+    <rect x="166" y="240" width="3" height="2" rx="0.5"/>
+    <rect x="864" y="256" width="3" height="2" rx="0.5"/>
+    <rect x="882" y="236" width="3" height="2" rx="0.5"/>
+    <rect x="906" y="235" width="3" height="2" rx="0.5"/>
+    <rect x="960" y="240" width="3" height="2" rx="0.5"/>
+    <rect x="1108" y="265" width="3" height="2" rx="0.5"/>
+    <rect x="1170" y="228" width="3" height="2" rx="0.5"/>
+    <rect x="1312" y="252" width="3" height="2" rx="0.5"/>
+    <rect x="242" y="220" width="2" height="2" rx="0.5"/>
+    <rect x="1338" y="250" width="3" height="2" rx="0.5"/>
+  </g>
+
+  <!-- TV antenna outline -->
+  <line x1="803" y1="60" x2="803" y2="268" stroke="rgba(240,208,96,0.22)" stroke-width="0.6"/>
+
+  <!-- Seine water shimmer -->
+  <rect x="0" y="298" width="1440" height="12" fill="url(#rg)" opacity="0.7"/>
 </svg>
 
 <div class="bubbles" id="bubbles"></div>
@@ -682,12 +849,40 @@ function spawnFinale(){ for(let i=0;i<6;i++) setTimeout(()=>burst(Math.random()*
 // ─── STARS ────────────────────────────────────────────────────
 (function(){
   const c=document.getElementById("stars");
-  for(let i=0;i<85;i++){
-    const s=document.createElement("div"); s.className="star";
-    const sz=Math.random()*2.5+.5;
-    s.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*72}vh;width:${sz}px;height:${sz}px;animation-duration:${Math.random()*4+2}s;animation-delay:${Math.random()*7}s;`;
+  const palette=[
+    ["#FFFFFF","0 0 3px #FFFFFF"],
+    ["#EEF4FF","0 0 4px #C8DAFF"],  // ice blue-white
+    ["#D8EEFF","0 0 5px #A0C8FF"],  // cool blue
+    ["#FFE8A0","0 0 5px #F0C840"],  // warm gold
+    ["#F0D060","0 0 6px #E8B820"],  // gold
+    ["#FFD8E0","0 0 4px #FFAABC"],  // rose blush
+    ["#E8D0FF","0 0 5px #C890FF"],  // lavender
+    ["#FFFDE0","0 0 3px #FFF0A0"],  // cream
+  ];
+  for(let i=0;i<120;i++){
+    const s=document.createElement("div");
+    const sz=Math.random()*2.6+0.4;
+    const [col,glow]=palette[Math.floor(Math.random()*palette.length)];
+    const big=sz>2.2&&Math.random()>.5;
+    s.className="star"+(big?" big":"");
+    s.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*76}vh;width:${sz}px;height:${sz}px;background:${col};box-shadow:${glow};animation-duration:${Math.random()*5+1.5}s;animation-delay:${Math.random()*9}s;`;
     c.appendChild(s);
   }
+  // Shooting stars
+  function shoot(){
+    const el=document.createElement("div"); el.className="shooting-star";
+    const len=Math.random()*90+35;
+    const ang=-(Math.random()*22+8);
+    const dx=Math.cos(ang*Math.PI/180)*180;
+    const dy=Math.sin(ang*Math.PI/180)*180;
+    el.style.setProperty("--sx",dx+"px");
+    el.style.setProperty("--sy",dy+"px");
+    el.style.cssText+=`top:${Math.random()*42}vh;left:${Math.random()*65+8}vw;width:${len}px;transform:rotate(${ang}deg);animation-duration:${Math.random()*.35+.3}s;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 900);
+    setTimeout(shoot, Math.random()*9000+4000);
+  }
+  setTimeout(shoot, 2500);
 })();
 
 // ─── BUBBLES ──────────────────────────────────────────────────

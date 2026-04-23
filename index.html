@@ -45,8 +45,9 @@
       radial-gradient(ellipse 62% 52% at 5% 58%, rgba(100,22,220,0.26) 0%, rgba(55,8,160,0.13) 52%, transparent 72%),
       /* teal aurora band upper-mid */
       radial-gradient(ellipse 95% 32% at 32% 24%, rgba(8,185,175,0.12) 0%, rgba(20,80,200,0.06) 55%, transparent 72%),
-      /* gold moon-light glow */
-      radial-gradient(ellipse 38% 30% at 73% 11%, rgba(201,168,76,0.17) 0%, rgba(180,100,20,0.06) 55%, transparent 72%),
+      /* gold moon-light glow — bigger & brighter now */
+      radial-gradient(ellipse 55% 42% at 73% 8%, rgba(255,220,100,0.22) 0%, rgba(201,140,20,0.10) 45%, transparent 68%),
+      radial-gradient(ellipse 28% 22% at 73% 6%, rgba(255,248,180,0.18) 0%, transparent 55%),
       /* indigo-midnight right-mid */
       radial-gradient(ellipse 48% 38% at 90% 62%, rgba(50,12,170,0.16) 0%, transparent 58%),
       /* soft rose bloom center-low */
@@ -64,51 +65,117 @@
     position:absolute; border-radius:50%; filter:blur(58px);
   }
   .aurora-1 {
-    width:90vw; height:42vh; top:3%; left:-10%;
-    background:radial-gradient(ellipse, rgba(16,210,190,0.09) 0%, rgba(60,16,210,0.055) 52%, transparent 80%);
+    width:95vw; height:50vh; top:1%; left:-12%;
+    background:radial-gradient(ellipse, rgba(16,220,200,0.16) 0%, rgba(38,10,220,0.09) 48%, transparent 78%);
     animation:awave 26s ease-in-out infinite alternate;
   }
   .aurora-2 {
-    width:78vw; height:38vh; top:7%; right:-10%;
-    background:radial-gradient(ellipse, rgba(200,28,160,0.08) 0%, rgba(65,12,210,0.05) 52%, transparent 80%);
+    width:82vw; height:46vh; top:4%; right:-12%;
+    background:radial-gradient(ellipse, rgba(220,22,175,0.15) 0%, rgba(90,8,230,0.08) 50%, transparent 78%);
     animation:awave 34s ease-in-out infinite alternate-reverse;
   }
   .aurora-3 {
-    width:105vw; height:24vh; top:26%; left:2%;
-    background:radial-gradient(ellipse, rgba(14,130,215,0.07) 0%, rgba(30,20,180,0.04) 52%, transparent 72%);
+    width:110vw; height:30vh; top:22%; left:-2%;
+    background:radial-gradient(ellipse, rgba(10,150,240,0.13) 0%, rgba(20,18,200,0.07) 50%, transparent 72%);
     animation:awave 21s ease-in-out infinite alternate; animation-delay:-11s;
   }
   .aurora-4 {
-    width:60vw; height:30vh; top:14%; left:22%;
-    background:radial-gradient(ellipse, rgba(180,60,220,0.07) 0%, rgba(80,20,200,0.04) 52%, transparent 76%);
+    width:65vw; height:38vh; top:10%; left:18%;
+    background:radial-gradient(ellipse, rgba(200,55,245,0.13) 0%, rgba(70,12,210,0.07) 50%, transparent 76%);
     animation:awave 28s ease-in-out infinite alternate-reverse; animation-delay:-6s;
   }
+  /* extra golden aurora near moon */
+  .aurora-5 {
+    width:45vw; height:28vh; top:2%; right:4%;
+    background:radial-gradient(ellipse, rgba(220,170,50,0.10) 0%, rgba(180,80,10,0.05) 50%, transparent 72%);
+    animation:awave 38s ease-in-out infinite alternate; animation-delay:-3s;
+  }
   @keyframes awave {
-    0%   { opacity:.30; transform:scale(1)   translateX(0)    translateY(0); }
-    33%  { opacity:.90; transform:scale(1.09) translateX(2.5%) translateY(-1.2%); }
-    66%  { opacity:.55; transform:scale(.93) translateX(-1.8%) translateY(1.1%); }
-    100% { opacity:.28; transform:scale(1.05) translateX(1.5%) translateY(.6%); }
+    0%   { opacity:.28; transform:scale(1)    translateX(0)     translateY(0); }
+    33%  { opacity:1.0;  transform:scale(1.10) translateX(2.8%)  translateY(-1.5%); }
+    66%  { opacity:.52; transform:scale(.93)  translateX(-2.2%) translateY(1.3%); }
+    100% { opacity:.25; transform:scale(1.06) translateX(1.8%)  translateY(.7%); }
   }
   /* ── MOON ───────────────────────────────────────────────── */
-  .moon {
-    position:fixed; z-index:0; pointer-events:none;
-    width:50px; height:50px; top:9%; right:12%;
-    border-radius:50%;
-    background:radial-gradient(circle at 36% 34%, #FFFDE8 0%, #FDE89A 35%, #E0B840 62%, #9B7010 85%, transparent 100%);
-    box-shadow:0 0 22px rgba(201,168,76,.42), 0 0 65px rgba(201,168,76,.16), 0 0 120px rgba(201,168,76,.06);
+  .moon-wrap {
+    position:fixed; z-index:2; pointer-events:none;
+    top:7%; right:10%;
     animation:moondrift 48s ease-in-out infinite alternate;
   }
-  .moon::before {
-    content:''; position:absolute; inset:-32px; border-radius:50%;
-    background:radial-gradient(circle, rgba(201,168,76,.13) 0%, transparent 70%);
+  /* outer atmospheric corona — big diffuse halo */
+  .moon-corona {
+    position:absolute;
+    width:340px; height:340px;
+    top:50%; left:50%; transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:radial-gradient(circle,
+      rgba(255,240,160,0.10) 0%,
+      rgba(220,180,60,0.07)  22%,
+      rgba(180,120,20,0.04)  42%,
+      rgba(140,80,10,0.02)   60%,
+      transparent 75%);
+    filter:blur(18px);
+    animation:coronapulse 9s ease-in-out infinite alternate;
   }
+  @keyframes coronapulse {
+    from { opacity:.7; transform:translate(-50%,-50%) scale(.94); }
+    to   { opacity:1;  transform:translate(-50%,-50%) scale(1.06); }
+  }
+  /* halo ring — optical ring visible around real full moons */
+  .moon-halo {
+    position:absolute;
+    width:200px; height:200px;
+    top:50%; left:50%; transform:translate(-50%,-50%);
+    border-radius:50%;
+    border:1.5px solid rgba(255,235,140,0.22);
+    box-shadow:
+      0 0 0 8px  rgba(240,210,90,0.06),
+      0 0 0 22px rgba(220,180,50,0.04),
+      0 0 0 45px rgba(200,150,30,0.025);
+    animation:halorotate 90s linear infinite;
+  }
+  @keyframes halorotate { to { transform:translate(-50%,-50%) rotate(360deg); } }
+  /* moon disc itself */
+  .moon {
+    position:absolute;
+    width:82px; height:82px;
+    top:50%; left:50%; transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:
+      /* crater shadows */
+      radial-gradient(circle 9px at 62% 28%, rgba(160,110,20,.38) 0%, transparent 100%),
+      radial-gradient(circle 6px at 30% 62%, rgba(180,130,30,.28) 0%, transparent 100%),
+      radial-gradient(circle 4px at 54% 58%, rgba(140,100,15,.22) 0%, transparent 100%),
+      /* main surface */
+      radial-gradient(circle at 36% 32%, #FFFEF4 0%, #FFF4C0 18%, #FAE070 42%, #D4950A 68%, #7D4E00 88%, rgba(50,28,0,.5) 100%);
+    box-shadow:
+      0 0 28px  rgba(255,230,100,.65),
+      0 0 70px  rgba(220,170,40,.35),
+      0 0 130px rgba(180,120,20,.18),
+      inset -6px -6px 18px rgba(80,40,0,.28);
+  }
+  /* subtle shimmer on moon surface */
   .moon::after {
-    content:''; position:absolute; inset:-70px; border-radius:50%;
-    background:radial-gradient(circle, rgba(201,168,76,.05) 0%, transparent 60%);
+    content:''; position:absolute; inset:0; border-radius:50%;
+    background:radial-gradient(ellipse 55% 45% at 30% 28%, rgba(255,255,255,.22) 0%, transparent 62%);
   }
   @keyframes moondrift {
-    from { transform:translateY(0) rotate(0deg); }
-    to   { transform:translateY(-11px) rotate(3deg); }
+    from { transform:translateY(0); }
+    to   { transform:translateY(-14px) translateX(4px); }
+  }
+  /* ── SPARKLES (fairy dust) ─────────────────────────────── */
+  .sparkles { position:fixed; inset:0; z-index:1; pointer-events:none; }
+  .sparkle {
+    position:absolute; pointer-events:none;
+    width:3px; height:3px; border-radius:50%;
+    animation:sparkle-float linear infinite;
+  }
+  @keyframes sparkle-float {
+    0%   { opacity:0;   transform:translateY(0)    scale(0) rotate(0deg); }
+    8%   { opacity:.9;  transform:translateY(-12px) scale(1.4) rotate(40deg); }
+    50%  { opacity:.55; transform:translateY(-55px) scale(0.9) rotate(140deg); }
+    92%  { opacity:.15; transform:translateY(-110px) scale(0.5) rotate(260deg); }
+    100% { opacity:0;   transform:translateY(-130px) scale(0); }
   }
 
   /* ── STARS ──────────────────────────────────────────────── */
@@ -426,8 +493,13 @@
 
 <!-- Background layers -->
 <div class="bg-sky"></div>
-<div class="bg-aurora"><div class="aurora-1"></div><div class="aurora-2"></div><div class="aurora-3"></div><div class="aurora-4"></div></div>
-<div class="moon"></div>
+<div class="bg-aurora"><div class="aurora-1"></div><div class="aurora-2"></div><div class="aurora-3"></div><div class="aurora-4"></div><div class="aurora-5"></div></div>
+<div class="moon-wrap">
+  <div class="moon-corona"></div>
+  <div class="moon-halo"></div>
+  <div class="moon"></div>
+</div>
+<div class="sparkles" id="sparkles"></div>
 <div class="stars" id="stars"></div>
 
 <!-- Paris skyline SVG -->
@@ -883,6 +955,30 @@ function spawnFinale(){ for(let i=0;i<6;i++) setTimeout(()=>burst(Math.random()*
     setTimeout(shoot, Math.random()*9000+4000);
   }
   setTimeout(shoot, 2500);
+})();
+
+// ─── SPARKLES (fairy dust) ────────────────────────────────────
+(function(){
+  const c=document.getElementById("sparkles");
+  const cols=[
+    "#FFF8D0","#F0D060","#FFFDE0","#FFD8E0","#E8D0FF","#C8EAFF","#fff","#FFE090"
+  ];
+  const shapes=["50%","30% 70% 70% 30% / 30% 30% 70% 70%","50%","2px","50%"];
+  for(let i=0;i<70;i++){
+    const el=document.createElement("div"); el.className="sparkle";
+    const sz=(Math.random()*3.5+1)+"px";
+    el.style.cssText=`
+      left:${Math.random()*100}vw;
+      top:${60+Math.random()*38}vh;
+      width:${sz}; height:${sz};
+      background:${cols[Math.floor(Math.random()*cols.length)]};
+      border-radius:${shapes[Math.floor(Math.random()*shapes.length)]};
+      box-shadow:0 0 ${Math.random()*5+2}px ${cols[Math.floor(Math.random()*cols.length)]};
+      animation-duration:${Math.random()*7+4}s;
+      animation-delay:${Math.random()*12}s;
+    `;
+    c.appendChild(el);
+  }
 })();
 
 // ─── BUBBLES ──────────────────────────────────────────────────

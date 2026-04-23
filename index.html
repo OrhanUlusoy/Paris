@@ -6,788 +6,701 @@
   <title>Möhippa Paris 🗼</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
-  <!-- Firebase -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <style>
-    /* ── RESET & BASE ───────────────────────────────────────── */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      --gold:   #C9A84C;
-      --gold2:  #F0D060;
-      --gold3:  #FFF0A0;
-      --bg:     #07071A;
-      --navy:   #0D0D2B;
-      --card:   rgba(255,255,255,0.055);
-      --border: rgba(201,168,76,0.28);
-      --smash:  #22c55e;
-      --pass:   #ef4444;
-      --text:   #F5EFE0;
-      --muted:  rgba(245,239,224,0.42);
-      --rose:   #E8A0B0;
-    }
+  :root {
+    --gold:   #C9A84C;
+    --gold2:  #F0D060;
+    --gold3:  #FFF5C0;
+    --cream:  #F5EFE0;
+    --bg:     #06061A;
+    --border: rgba(201,168,76,0.3);
+    --rose:   #E8A0B0;
+    --green:  #6EE7B7;
+    --muted:  rgba(245,239,224,0.4);
+  }
 
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
-      background-image:
-        radial-gradient(ellipse 100% 55% at 50% 0%, rgba(201,168,76,0.13) 0%, transparent 65%),
-        radial-gradient(ellipse 70% 50% at 10% 100%, rgba(60,10,100,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 90% 80%,  rgba(180,60,100,0.08) 0%, transparent 55%);
-      min-height: 100dvh;
-      color: var(--text);
-      overflow-x: hidden;
-    }
+  /* ── BACKGROUND ─────────────────────────────────────────── */
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--bg);
+    min-height: 100dvh;
+    color: var(--cream);
+    overflow-x: hidden;
+    position: relative;
+  }
+  .bg-sky {
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 120% 60% at 50% -5%,  rgba(201,168,76,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 80%  50% at 15% 110%,  rgba(80,20,140,0.25) 0%, transparent 55%),
+      radial-gradient(ellipse 60%  40% at 85% 90%,   rgba(180,50,100,0.12) 0%, transparent 50%),
+      linear-gradient(180deg, #06061A 0%, #0A0828 40%, #10082A 100%);
+  }
+  .bg-skyline {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 1;
+    pointer-events: none; height: 260px;
+  }
 
-    /* Paris skyline background */
-    body::before {
-      content: '';
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 220px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 220' preserveAspectRatio='xMidYMax slice'%3E%3Cpath fill='rgba(201,168,76,0.05)' d='M0,220 L0,160 L40,160 L40,140 L60,140 L60,100 L65,100 L65,60 L67,60 L67,30 L70,20 L73,30 L73,60 L75,60 L75,100 L80,100 L80,140 L100,140 L100,160 L140,160 L140,120 L160,120 L160,100 L170,80 L180,100 L180,120 L200,120 L200,160 L250,160 L250,140 L270,140 L270,110 L290,110 L290,140 L310,140 L310,160 L360,160 L360,130 L380,130 L380,80 L390,70 L400,80 L400,130 L420,130 L420,160 L480,160 L480,145 L520,145 L520,125 L540,125 L540,145 L580,145 L580,160 L640,160 L640,130 L660,130 L660,160 L720,160 L720,140 L740,140 L740,110 L760,110 L760,140 L780,140 L780,160 L840,160 L840,120 L870,120 L870,90 L890,90 L890,120 L920,120 L920,160 L980,160 L980,145 L1010,145 L1010,125 L1030,125 L1030,145 L1060,145 L1060,160 L1120,160 L1120,130 L1150,130 L1150,100 L1165,80 L1180,100 L1180,130 L1210,130 L1210,160 L1280,160 L1280,140 L1310,140 L1310,160 L1380,160 L1380,145 L1440,145 L1440,220 Z'/%3E%3C/svg%3E");
-      background-size: cover;
-      background-position: bottom;
-      pointer-events: none;
-      z-index: 0;
-    }
+  /* ── STARS ──────────────────────────────────────────────── */
+  .stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .star {
+    position: absolute; background: #fff; border-radius: 50%;
+    animation: twinkle ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0.12; transform: scale(1); }
+    50%     { opacity: 0.95; transform: scale(1.5); }
+  }
 
-    /* ── SCREENS ────────────────────────────────────────────── */
-    .screen {
-      display: none;
-      min-height: 100dvh;
-      padding: 24px 16px;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .screen.active { display: flex; }
-    #screen-vote.active,
-    #screen-results.active { justify-content: flex-start; }
+  /* ── BUBBLES ────────────────────────────────────────────── */
+  .bubbles { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+  .bubble  { position: absolute; border-radius: 50%; opacity: 0; animation: rise linear infinite; }
+  @keyframes rise {
+    0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+    8%   { opacity: 0.6; }
+    88%  { opacity: 0.15; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
 
-    /* ── SHARED ─────────────────────────────────────────────── */
-    .gold-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(26px, 7vw, 42px);
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 45%, var(--gold3) 55%, var(--gold2) 70%, var(--gold) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-align: center;
-      letter-spacing: 0.5px;
-    }
+  /* ── SCREENS ────────────────────────────────────────────── */
+  .screen {
+    display: none; position: relative; z-index: 10;
+    min-height: 100dvh; padding: 28px 18px 36px;
+    flex-direction: column; align-items: center; justify-content: center;
+  }
+  .screen.active { display: flex; animation: screenIn .5s ease both; }
+  #screen-vote.active, #screen-results.active { justify-content: flex-start; }
+  @keyframes screenIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-    /* ── LOGIN ──────────────────────────────────────────────── */
-    .login-tower {
-      font-size: 80px;
-      line-height: 1;
-      margin-bottom: 14px;
-      filter: drop-shadow(0 0 24px rgba(201,168,76,0.5));
-      animation: glow-tower 3s ease-in-out infinite alternate;
-    }
-    @keyframes glow-tower {
-      from { filter: drop-shadow(0 0 16px rgba(201,168,76,0.35)); }
-      to   { filter: drop-shadow(0 0 36px rgba(240,208,96,0.7)); }
-    }
-    .login-subtitle {
-      font-family: 'Inter', sans-serif;
-      color: var(--rose);
-      font-size: 11px;
-      font-weight: 600;
-      margin: 8px 0 40px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-    }
-    .login-divider {
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 0 auto 32px;
-    }
+  /* ── SHARED ─────────────────────────────────────────────── */
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .gold-text {
+    background: linear-gradient(125deg, #8B6008 0%, var(--gold) 25%, var(--gold2) 50%, var(--gold3) 62%, var(--gold2) 75%, var(--gold) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .divider       { width: 70px;  height: 1px; background: linear-gradient(90deg,transparent,var(--gold2),transparent); margin: 0 auto; }
+  .divider-wide  { width: 160px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),var(--gold2),var(--gold),transparent); margin: 0 auto; }
 
-    .name-input {
-      width: 100%;
-      max-width: 320px;
-      padding: 16px 24px;
-      border-radius: 50px;
-      border: 1.5px solid var(--border);
-      background: rgba(255,255,255,0.04);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 16px;
-      outline: none;
-      text-align: center;
-      transition: border-color .3s, box-shadow .3s;
-      margin-bottom: 14px;
-      letter-spacing: 0.5px;
-    }
-    .name-input:focus {
-      border-color: var(--gold2);
-      box-shadow: 0 0 0 3px rgba(201,168,76,0.12), 0 0 20px rgba(201,168,76,0.1);
-    }
-    .name-input::placeholder { color: var(--muted); }
+  /* ── LOGIN ──────────────────────────────────────────────── */
+  .login-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    width: 100%; max-width: 440px;
+    animation: fadeUp .8s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-    .btn-gold {
-      width: 100%;
-      max-width: 320px;
-      padding: 16px;
-      border-radius: 50px;
-      border: none;
-      background: linear-gradient(135deg, #8B6914 0%, var(--gold) 30%, var(--gold2) 55%, var(--gold3) 65%, var(--gold2) 80%, var(--gold) 100%);
-      color: #07071A;
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: transform .2s, box-shadow .2s;
-      box-shadow: 0 4px 20px rgba(201,168,76,0.25);
-    }
-    .btn-gold:hover  { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(201,168,76,.45); }
-    .btn-gold:active { transform: scale(0.97); }
+  .tower-wrap { position: relative; margin-bottom: 22px; }
+  .tower-glow {
+    position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+    width: 110px; height: 35px;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.5) 0%, transparent 70%);
+    filter: blur(8px);
+    animation: glow-pulse 2.5s ease-in-out infinite alternate;
+  }
+  @keyframes glow-pulse {
+    from { opacity:.5; transform:translateX(-50%) scaleX(.8); }
+    to   { opacity:1;  transform:translateX(-50%) scaleX(1.2); }
+  }
 
-    .login-error {
-      color: #f87171;
-      font-size: 13px;
-      margin-top: 10px;
-      min-height: 18px;
-    }
+  .login-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 5px;
+    color: var(--rose); text-transform: uppercase; margin-bottom: 10px;
+    animation: fadeUp .7s .1s ease both;
+  }
+  .login-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(50px, 14vw, 76px);
+    font-weight: 300; line-height: 1; text-align: center;
+    letter-spacing: 6px;
+    animation: fadeUp .7s .15s ease both;
+  }
+  .login-accent {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(14px, 4vw, 19px); font-weight: 300;
+    color: rgba(245,239,224,.55); letter-spacing: 2px;
+    margin: 8px 0 20px;
+    animation: fadeUp .7s .2s ease both;
+  }
+  .login-card {
+    width: 100%; max-width: 340px;
+    background: rgba(10,10,30,0.72);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 30px 26px;
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(201,168,76,0.07), inset 0 1px 0 rgba(255,255,255,0.06);
+    animation: fadeUp .7s .3s ease both;
+    margin-top: 22px;
+  }
+  .login-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 3px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 10px; text-align: center;
+  }
+  .name-input {
+    width: 100%; padding: 15px 20px;
+    border-radius: 14px; border: 1.5px solid rgba(201,168,76,0.2);
+    background: rgba(255,255,255,0.04);
+    color: var(--cream); font-family: 'Montserrat', sans-serif;
+    font-size: 15px; outline: none; text-align: center;
+    transition: border-color .3s, box-shadow .3s;
+    margin-bottom: 14px; letter-spacing: 0.8px;
+  }
+  .name-input:focus { border-color: var(--gold2); box-shadow: 0 0 0 3px rgba(201,168,76,0.1), 0 0 24px rgba(201,168,76,0.08); }
+  .name-input::placeholder { color: rgba(245,239,224,.28); }
 
-    /* ── VOTE HEADER ────────────────────────────────────────── */
-    .vote-topbar {
-      width: 100%;
-      max-width: 440px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .vote-user   { font-size: 13px; color: var(--gold); font-weight: 600; }
-    .vote-count  { font-size: 13px; color: var(--muted); }
+  .btn-gold {
+    width: 100%; padding: 16px;
+    border-radius: 14px; border: none;
+    background: linear-gradient(135deg, #7A5500 0%, var(--gold) 30%, var(--gold2) 55%, var(--gold3) 65%, var(--gold2) 80%, var(--gold) 100%);
+    color: #06061A; font-family: 'Montserrat', sans-serif;
+    font-size: 11px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase;
+    cursor: pointer; transition: transform .2s, box-shadow .2s, filter .2s;
+    box-shadow: 0 6px 28px rgba(201,168,76,.35), inset 0 1px 0 rgba(255,255,255,.22);
+    position: relative; overflow: hidden;
+  }
+  .btn-gold::before {
+    content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);
+    transition:left .5s;
+  }
+  .btn-gold:hover { transform:translateY(-2px); box-shadow:0 12px 36px rgba(201,168,76,.5); filter:brightness(1.06); }
+  .btn-gold:hover::before { left:100%; }
+  .btn-gold:active { transform:scale(.97); }
+  .login-error { color:var(--rose); font-size:12px; margin-top:10px; min-height:16px; text-align:center; letter-spacing:.5px; }
 
-    .prog-track {
-      width: 100%;
-      max-width: 440px;
-      height: 3px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 3px;
-      overflow: hidden;
-      margin-bottom: 16px;
-    }
-    .prog-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--gold), var(--gold2));
-      border-radius: 3px;
-      transition: width .5s ease;
-    }
+  /* ── VOTE HEADER ─────────────────────────────────────────── */
+  .vote-header {
+    width:100%; max-width:480px;
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:12px; padding:0 2px;
+  }
+  .vote-user {
+    font-size:12px; font-weight:700; letter-spacing:.5px;
+    background:linear-gradient(90deg,var(--gold),var(--gold2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .vote-counter { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:1px; }
 
-    /* ── CARD ───────────────────────────────────────────────── */
-    .card {
-      width: 100%;
-      max-width: 440px;
-      background: linear-gradient(160deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%);
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      overflow: hidden;
-      margin-bottom: 16px;
-      transition: transform .3s, opacity .3s;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
-    }
-    .card-img {
-      width: 100%;
-      aspect-ratio: 3/4;
-      object-fit: cover;
-      object-position: top center;
-      display: block;
-    }
-    /* Subtle shimmer on image */
-    .card-img-wrap { position: relative; }
-    .card-img-wrap::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 55%, rgba(7,7,26,0.7) 100%);
-      pointer-events: none;
-    }
-    .card-body  { padding: 20px 22px 22px; }
-    .card-name  {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--gold2);
-      margin-bottom: 4px;
-      letter-spacing: 0.3px;
-    }
-    .card-meta  { font-size: 13px; color: var(--rose); margin-bottom: 14px; font-weight: 500; }
+  .prog-track {
+    width:100%; max-width:480px; height:2px;
+    background:rgba(255,255,255,.06); border-radius:2px;
+    overflow:visible; margin-bottom:16px; position:relative;
+  }
+  .prog-fill {
+    height:100%;
+    background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3));
+    border-radius:2px; transition:width .5s cubic-bezier(.4,0,.2,1); position:relative;
+  }
+  .prog-fill::after {
+    content:''; position:absolute; right:-4px; top:-4px;
+    width:10px; height:10px;
+    background:var(--gold2); border-radius:50%;
+    box-shadow:0 0 10px var(--gold2), 0 0 20px var(--gold);
+  }
 
-    .tags       { display: flex; flex-wrap: wrap; gap: 7px; }
-    .tag {
-      padding: 5px 13px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-      line-height: 1.3;
-    }
-    .tag-neutral { background: rgba(201,168,76,0.1); color: rgba(245,239,224,.7); border: 1px solid rgba(201,168,76,0.2); }
-    .tag-green   { background: rgba(34,197,94,.1);  color: #6ee7b7; border: 1px solid rgba(34,197,94,.25); }
-    .tag-red     { background: rgba(232,160,176,.1); color: var(--rose); border: 1px solid rgba(232,160,176,.25); }
+  /* ── CARD ───────────────────────────────────────────────── */
+  .card {
+    width:100%; max-width:480px;
+    background:rgba(14,14,38,0.88);
+    border:1px solid rgba(201,168,76,0.22);
+    border-radius:32px; overflow:hidden; margin-bottom:16px;
+    transition:transform .38s cubic-bezier(.4,0,.2,1), opacity .38s;
+    box-shadow:0 24px 64px rgba(0,0,0,.58), 0 0 0 1px rgba(255,255,255,.03), inset 0 1px 0 rgba(255,255,255,.06);
+  }
+  .card-img-wrap { position:relative; aspect-ratio:3/4; overflow:hidden; }
+  .card-img {
+    width:100%; height:100%; object-fit:cover; object-position:top center; display:block;
+    transition:transform .6s ease;
+  }
+  .card:hover .card-img { transform:scale(1.025); }
+  .card-img-wrap::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg,rgba(6,6,26,.0) 38%,rgba(6,6,26,.55) 68%,rgba(6,6,26,.92) 100%);
+    pointer-events:none;
+  }
+  .card-overlay {
+    position:absolute; bottom:0; left:0; right:0;
+    padding:18px 24px 20px; z-index:2;
+  }
+  .card-overlay-name {
+    font-family:'Cormorant Garamond',serif;
+    font-size:34px; font-weight:600; color:#fff; line-height:1;
+    text-shadow:0 2px 14px rgba(0,0,0,.5); letter-spacing:1px;
+  }
+  .card-overlay-job {
+    font-size:11px; font-weight:600; letter-spacing:2.5px;
+    color:var(--gold2); text-transform:uppercase; margin-top:5px;
+    text-shadow:0 1px 6px rgba(0,0,0,.4);
+  }
+  .card-body { padding:16px 20px 20px; }
+  .tags { display:flex; flex-wrap:wrap; gap:8px; }
+  .tag { padding:6px 14px; border-radius:20px; font-size:11px; font-weight:600; line-height:1.4; letter-spacing:.3px; }
+  .tag-neutral { background:rgba(201,168,76,.1);   color:rgba(245,239,224,.75); border:1px solid rgba(201,168,76,.22); }
+  .tag-green   { background:rgba(110,231,183,.09); color:var(--green);          border:1px solid rgba(110,231,183,.22); }
+  .tag-red     { background:rgba(232,160,176,.09); color:var(--rose);           border:1px solid rgba(232,160,176,.22); }
 
-    /* ── VOTE BUTTONS ───────────────────────────────────────── */
-    .vote-btns {
-      width: 100%;
-      max-width: 440px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .btn-vote {
-      padding: 20px 10px;
-      border-radius: 18px;
-      border: 2px solid;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      font-size: 28px;
-      transition: transform .15s, background .15s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn-vote span { font-size: 12px; font-weight: 800; letter-spacing: 2px; }
+  /* ── VOTE BUTTONS ───────────────────────────────────────── */
+  .vote-btns { width:100%; max-width:480px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .btn-vote {
+    padding:22px 10px; border-radius:22px; border:1.5px solid;
+    cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px;
+    font-size:32px; transition:transform .15s, background .15s, box-shadow .15s;
+    -webkit-tap-highlight-color:transparent; backdrop-filter:blur(8px);
+  }
+  .btn-vote span { font-family:'Montserrat',sans-serif; font-size:10px; font-weight:800; letter-spacing:4px; text-transform:uppercase; }
+  .btn-pass  { background:rgba(232,160,176,.07); border-color:rgba(232,160,176,.32); color:var(--rose); }
+  .btn-smash { background:rgba(110,231,183,.07); border-color:rgba(110,231,183,.32); color:var(--green); }
+  .btn-pass:active  { background:rgba(232,160,176,.22); transform:scale(.95); box-shadow:0 0 30px rgba(232,160,176,.18); }
+  .btn-smash:active { background:rgba(110,231,183,.22); transform:scale(.95); box-shadow:0 0 30px rgba(110,231,183,.22); }
 
-    .btn-pass  {
-      background: rgba(232,160,176,.08);
-      border-color: rgba(232,160,176,.4);
-      color: var(--rose);
-    }
-    .btn-smash {
-      background: rgba(34,197,94,.08);
-      border-color: rgba(34,197,94,.4);
-      color: #6ee7b7;
-    }
-    .btn-pass:active  { background: rgba(232,160,176,.28); transform: scale(.96); }
-    .btn-smash:active { background: rgba(34,197,94,.28);   transform: scale(.96); }
-    .btn-vote span { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 3px; }
+  /* ── DONE ───────────────────────────────────────────────── */
+  .done-wrap { text-align:center; display:flex; flex-direction:column; align-items:center; gap:16px; }
+  .done-icon {
+    font-size:100px;
+    animation:popIn .65s cubic-bezier(.35,1.6,.55,1) both;
+    filter:drop-shadow(0 0 32px rgba(201,168,76,.7));
+  }
+  @keyframes popIn {
+    from { transform:scale(0) rotate(-18deg); opacity:0; }
+    to   { transform:scale(1) rotate(0);      opacity:1; }
+  }
+  .done-title { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,9vw,54px); font-weight:600; letter-spacing:2px; }
+  .done-sub   { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:18px; color:var(--muted); letter-spacing:1px; }
+  .done-stars { font-size:26px; letter-spacing:10px; opacity:.55; animation:fadein 1s .5s ease both; }
+  @keyframes fadein { from{opacity:0;} to{opacity:.55;} }
 
-    /* ── DONE ───────────────────────────────────────────────── */
-    .done-icon { font-size: 90px; margin-bottom: 22px; }
-    .done-sub  { color: var(--muted); font-size: 15px; margin-top: 10px; }
+  /* ── RESULTS HEADER ─────────────────────────────────────── */
+  .results-top { text-align:center; width:100%; margin-bottom:30px; }
+  .results-eyebrow { font-size:10px; font-weight:700; letter-spacing:5px; color:var(--rose); text-transform:uppercase; margin-bottom:8px; }
+  .results-title   { font-family:'Cormorant Garamond',serif; font-size:clamp(34px,8vw,58px); font-weight:300; letter-spacing:4px; }
+  .results-live    { font-size:10px; font-weight:700; letter-spacing:4px; color:var(--green); text-transform:uppercase; margin-top:6px; display:flex; align-items:center; justify-content:center; gap:6px; }
+  .live-dot        { width:7px; height:7px; background:var(--green); border-radius:50%; animation:blink 1.2s ease-in-out infinite; box-shadow:0 0 8px var(--green); }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.15;} }
 
-    /* ── RESET BTN ────────────────────────────────────────────── */
-    .btn-reset {
-      margin-top: 14px;
-      padding: 10px 26px;
-      border-radius: 50px;
-      border: 1.5px solid rgba(232,160,176,0.4);
-      background: rgba(232,160,176,0.07);
-      color: var(--rose);
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background .2s, transform .15s;
-    }
-    .btn-reset:hover  { background: rgba(232,160,176,0.18); }
-    .btn-reset:active { transform: scale(0.96); }
+  .btn-reset {
+    margin-top:14px; padding:10px 28px; border-radius:50px;
+    border:1px solid rgba(232,160,176,.35); background:rgba(232,160,176,.06);
+    color:var(--rose); font-family:'Montserrat',sans-serif;
+    font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase;
+    cursor:pointer; transition:background .2s,transform .15s;
+  }
+  .btn-reset:hover  { background:rgba(232,160,176,.16); }
+  .btn-reset:active { transform:scale(.96); }
 
-    /* ── RESULTS ────────────────────────────────────────────── */
-    .results-header { text-align: center; margin-bottom: 28px; }
-    .results-live   { font-size: 11px; color: var(--rose); margin-top: 6px; letter-spacing: 3px; font-weight: 600; text-transform: uppercase; }
+  /* ── RESULTS GRID ───────────────────────────────────────── */
+  .results-grid {
+    width:100%; max-width:1100px;
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:24px; padding-bottom:40px;
+  }
+  .r-card {
+    background:rgba(12,12,32,.82); border:1px solid rgba(201,168,76,.2);
+    border-radius:26px; overflow:hidden;
+    box-shadow:0 8px 36px rgba(0,0,0,.45); backdrop-filter:blur(10px);
+    transition:transform .2s,box-shadow .2s;
+  }
+  .r-card:hover { transform:translateY(-4px); box-shadow:0 18px 50px rgba(0,0,0,.55); }
+  .r-img-wrap  { position:relative; aspect-ratio:3/4; overflow:hidden; }
+  .r-img       { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; }
+  .r-img-wrap::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 42%,rgba(6,6,26,.92) 100%); pointer-events:none; }
+  .r-name-overlay { position:absolute; bottom:0; left:0; right:0; padding:18px 18px 14px; z-index:2; }
+  .r-name { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; color:#fff; letter-spacing:.5px; text-shadow:0 1px 8px rgba(0,0,0,.4); }
+  .r-body { padding:16px 18px 18px; }
+  .r-bar-label { display:flex; justify-content:space-between; font-size:11px; margin-bottom:5px; font-weight:600; letter-spacing:.5px; }
+  .r-bar-track { background:rgba(255,255,255,.07); border-radius:8px; height:8px; overflow:hidden; margin-bottom:12px; }
+  .r-bar-smash { height:100%; background:linear-gradient(90deg,#059669,#6EE7B7); border-radius:8px; transition:width .7s cubic-bezier(.4,0,.2,1); }
+  .r-bar-pass  { height:100%; background:linear-gradient(90deg,#9D174D,var(--rose)); border-radius:8px; transition:width .7s cubic-bezier(.4,0,.2,1); }
+  .r-total     { font-size:11px; color:var(--muted); text-align:center; margin-top:4px; letter-spacing:.5px; }
+  .r-verdict   { margin-top:12px; text-align:center; }
+  .verdict-badge { display:inline-block; padding:6px 18px; border-radius:20px; font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; }
+  .v-smash { background:rgba(110,231,183,.15); color:var(--green); border:1px solid rgba(110,231,183,.3); }
+  .v-pass  { background:rgba(232,160,176,.15); color:var(--rose);  border:1px solid rgba(232,160,176,.3); }
+  .v-tie   { background:rgba(240,208,96,.12);  color:var(--gold2); border:1px solid rgba(240,208,96,.3); }
+  .voters-list { font-size:10px; color:var(--muted); margin-top:10px; line-height:2; letter-spacing:.3px; }
 
-    .results-grid {
-      width: 100%;
-      max-width: 1100px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px;
-    }
-
-    .r-card {
-      background: linear-gradient(160deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      overflow: hidden;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.35);
-    }
-    .r-img  {
-      width: 100%;
-      aspect-ratio: 3/4;
-      object-fit: cover;
-      object-position: top center;
-    }
-    .r-body { padding: 16px; }
-    .r-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--gold2);
-      margin-bottom: 14px;
-    }
-
-    .r-row  { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
-    .r-bar-track {
-      background: rgba(255,255,255,0.08);
-      border-radius: 6px;
-      height: 10px;
-      overflow: hidden;
-      margin-bottom: 10px;
-    }
-    .r-bar-smash { height:100%; background:linear-gradient(90deg,#16a34a,#4ade80); border-radius:6px; transition:width .6s ease; }
-    .r-bar-pass  { height:100%; background:linear-gradient(90deg,#b91c1c,#f87171); border-radius:6px; transition:width .6s ease; }
-
-    .r-total   { font-size: 12px; color: var(--muted); text-align: center; margin-top: 6px; }
-    .r-verdict { margin-top: 10px; text-align: center; }
-    .verdict-badge {
-      display: inline-block;
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-    .v-smash { background:rgba(34,197,94,.18); color:#4ade80; }
-    .v-pass  { background:rgba(239,68,68,.18);  color:#f87171; }
-    .v-tie   { background:rgba(255,215,0,.18);  color:var(--gold2); }
-
-    /* ── VOTERS LIST ────────────────────────────────────────── */
-    .voters-list { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.8; }
-
-    /* ── CHAMPAGNE BUBBLES ──────────────────────────────────── */
-    .particles {
-      position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;
-    }
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0;
-      animation: bubble linear infinite;
-    }
-    @keyframes bubble {
-      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
-      8%   { opacity: 0.55; }
-      85%  { opacity: 0.2; }
-      100% { transform: translateY(-8vh) scale(1); opacity: 0; }
-    }
-
-    /* ── SCREEN z-index ─────────────────────────────────────── */
-    .screen { position: relative; z-index: 1; }
+  /* ── CONFETTI ───────────────────────────────────────────── */
+  .confetti-piece {
+    position:fixed; border-radius:2px; pointer-events:none; z-index:999;
+    animation:confetti-fall linear forwards;
+  }
+  @keyframes confetti-fall {
+    0%   { transform:translate(0,0) rotate(0deg) scale(1); opacity:1; }
+    100% { transform:translate(var(--tx),var(--ty)) rotate(var(--r)) scale(.25); opacity:0; }
+  }
   </style>
 </head>
 <body>
 
-  <!-- DECORATIVE PARTICLES -->
-  <div class="particles" id="particles"></div>
+<!-- Background layers -->
+<div class="bg-sky"></div>
+<div class="stars" id="stars"></div>
 
-  <!-- ╔══════════════════════════════════╗ -->
-  <!-- ║          LOGIN SCREEN            ║ -->
-  <!-- ╚══════════════════════════════════╝ -->
-  <div id="screen-login" class="screen active">
-    <div class="login-tower">🗼</div>
-    <h1 class="gold-title">Möhippa Paris</h1>
-    <p class="login-subtitle">Smash or Pass — Paris Édition</p>
-    <div class="login-divider"></div>
+<!-- Paris skyline SVG -->
+<svg class="bg-skyline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax meet">
+  <defs>
+    <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#C9A84C" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#C9A84C" stop-opacity="0.03"/>
+    </linearGradient>
+  </defs>
+  <!-- Left buildings -->
+  <path fill="url(#sg)" d="M0,260 L0,200 L30,200 L30,220 L50,220 L50,180 L70,180 L70,160 L80,155 L90,160 L90,180 L110,180 L110,200 L130,200 L130,210 L150,210 L150,190 L165,190 L165,210 L185,210 L185,260 Z"/>
+  <!-- Notre Dame suggestion -->
+  <path fill="url(#sg)" d="M200,260 L200,215 L220,215 L220,200 L235,185 L235,172 L238,162 L240,148 L242,162 L242,172 L245,185 L260,200 L260,215 L280,215 L280,260 Z"/>
+  <!-- Mid-left cluster -->
+  <path fill="url(#sg)" d="M320,260 L320,230 L340,230 L340,215 L360,215 L360,200 L375,190 L380,175 L385,190 L400,200 L400,215 L420,215 L420,230 L440,230 L440,260 Z"/>
+  <!-- Sacre Coeur domes -->
+  <path fill="url(#sg)" d="M480,260 L480,230 L496,230 L496,218 Q503,202 510,218 L510,205 Q517,188 524,205 L524,218 Q531,202 538,218 L538,230 L554,230 L554,260 Z"/>
+  <!-- Eiffel Tower - CENTER HERO -->
+  <path fill="url(#sg)" d="
+    M705,260 L702,235 L685,235 L676,205 L670,180 L666,158
+    L662,138 L659,116 L657,94 L655.5,72 L654,50
+    L652.5,34 L651,18 L650,6
+    L649,18 L647.5,34 L646,50
+    L644.5,72 L643,94 L641,116 L638,138
+    L634,158 L630,180 L624,205 L615,235 L598,235 L595,260 Z
+  "/>
+  <!-- Radio/TV tower right of Eiffel -->
+  <path fill="url(#sg)" d="M790,260 L790,230 L793,220 L794,200 L795,180 L796,160 L795.5,140 L795,120 L794.5,100 L794,80 L793.5,60 L793,50 L792.5,60 L792,80 L791.5,100 L791,120 L790.5,140 L790,160 L789,180 L790,200 L791,220 L791,230 L791,260"/>
+  <!-- Right cluster -->
+  <path fill="url(#sg)" d="M850,260 L850,220 L870,220 L870,200 L895,200 L895,180 L905,175 L915,180 L915,200 L935,200 L935,185 L950,185 L950,200 L970,200 L970,210 L990,210 L990,220 L1010,220 L1010,200 L1030,200 L1030,215 L1050,215 L1060,210 L1070,215 L1090,215 L1090,230 L1110,230 L1110,215 L1130,215 L1130,200 L1150,190 L1160,178 L1170,190 L1180,200 L1200,200 L1200,215 L1220,215 L1220,230 L1260,230 L1260,215 L1300,215 L1300,200 L1330,200 L1330,210 L1360,210 L1360,220 L1440,220 L1440,260 Z"/>
+</svg>
 
-    <input
-      class="name-input"
-      id="nameInput"
-      type="text"
-      placeholder="Ditt namn..."
-      maxlength="30"
-      autocomplete="off"
-      autocorrect="off"
-    />
-    <button class="btn-gold" onclick="startVoting()">Börja rösta ✨</button>
-    <p class="login-error" id="login-error"></p>
+<div class="bubbles" id="bubbles"></div>
+
+<!-- ══════════════════════════════════════════
+     LOGIN
+════════════════════════════════════════════ -->
+<div id="screen-login" class="screen active">
+  <div class="login-wrap">
+
+    <p class="login-eyebrow">✦ &nbsp;Paris 2026&nbsp; ✦</p>
+
+    <!-- Animated Eiffel Tower SVG -->
+    <div class="tower-wrap">
+      <svg width="88" height="138" viewBox="0 0 88 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="tg" x1="44" y1="0" x2="44" y2="138" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="#FFF5C0"/>
+            <stop offset="40%"  stop-color="#F0D060"/>
+            <stop offset="100%" stop-color="#C9A84C"/>
+          </linearGradient>
+        </defs>
+        <path d="M44 2 L42 18 L46 18 Z"             fill="url(#tg)" opacity=".9"/>
+        <path d="M42 18 L39 33 L49 33 L46 18 Z"     fill="url(#tg)" opacity=".85"/>
+        <rect x="37" y="33" width="14" height="3" rx="1" fill="url(#tg)" opacity=".7"/>
+        <path d="M39 36 L32 56 L56 56 L49 36 Z"     fill="url(#tg)" opacity=".8"/>
+        <rect x="29" y="56" width="30" height="4" rx="1" fill="url(#tg)" opacity=".65"/>
+        <path d="M32 60 L17 92 L35 92 L39 60 Z"     fill="url(#tg)" opacity=".75"/>
+        <path d="M56 60 L71 92 L53 92 L49 60 Z"     fill="url(#tg)" opacity=".75"/>
+        <rect x="15" y="92" width="58" height="4" rx="1" fill="url(#tg)" opacity=".6"/>
+        <path d="M17 96 L4 138 L24 138 L32 96 Z"    fill="url(#tg)" opacity=".7"/>
+        <path d="M71 96 L84 138 L64 138 L56 96 Z"   fill="url(#tg)" opacity=".7"/>
+        <path d="M32 96 L35 138 L53 138 L56 96 Z"   fill="url(#tg)" opacity=".65"/>
+        <!-- Twinkling lights -->
+        <circle cx="44" cy="4" r="1.8" fill="#FFFFF0" opacity=".9">
+          <animate attributeName="opacity" values="0.9;0.1;0.9" dur="1.8s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="44" cy="35" r="1.4" fill="#F0D060" opacity=".7">
+          <animate attributeName="opacity" values="0.7;0.1;0.7" dur="2.2s" begin=".4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="29" cy="58" r="1.2" fill="#F0D060" opacity=".6">
+          <animate attributeName="opacity" values="0.6;0.05;0.6" dur="1.6s" begin=".8s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="59" cy="58" r="1.2" fill="#F0D060" opacity=".6">
+          <animate attributeName="opacity" values="0.6;0.05;0.6" dur="1.6s" begin="1.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="18" cy="94" r="1.1" fill="#C9A84C" opacity=".5">
+          <animate attributeName="opacity" values="0.5;0.05;0.5" dur="2s" begin=".2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="70" cy="94" r="1.1" fill="#C9A84C" opacity=".5">
+          <animate attributeName="opacity" values="0.5;0.05;0.5" dur="2s" begin=".9s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="25" cy="120" r="1"  fill="#C9A84C" opacity=".4">
+          <animate attributeName="opacity" values="0.4;0.05;0.4" dur="2.4s" begin="1.4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="63" cy="120" r="1"  fill="#C9A84C" opacity=".4">
+          <animate attributeName="opacity" values="0.4;0.05;0.4" dur="2.4s" begin=".6s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+      <div class="tower-glow"></div>
+    </div>
+
+    <h1 class="login-title gold-text">PARIS</h1>
+    <p class="login-accent">Möhippa — Smash or Pass</p>
+    <div class="divider-wide"></div>
+
+    <div class="login-card">
+      <p class="login-label">Qui êtes-vous?</p>
+      <input
+        class="name-input" id="nameInput" type="text"
+        placeholder="Ditt namn..." maxlength="30"
+        autocomplete="off" autocorrect="off"
+      />
+      <button class="btn-gold" onclick="startVoting()">Entrez &nbsp;✦</button>
+      <p class="login-error" id="login-error"></p>
+    </div>
+
   </div>
+</div>
 
-  <!-- ╔══════════════════════════════════╗ -->
-  <!-- ║          VOTING SCREEN           ║ -->
-  <!-- ╚══════════════════════════════════╝ -->
-  <div id="screen-vote" class="screen">
-    <div class="vote-topbar">
-      <span class="vote-user" id="vote-user-label"></span>
-      <span class="vote-count" id="vote-count-label"></span>
-    </div>
-    <div class="prog-track">
-      <div class="prog-fill" id="prog-fill"></div>
-    </div>
-
-    <div class="card" id="vote-card">
-      <div class="card-img-wrap">
-        <img class="card-img" id="card-img" src="" alt="" loading="lazy" />
+<!-- ══════════════════════════════════════════
+     VOTE
+════════════════════════════════════════════ -->
+<div id="screen-vote" class="screen">
+  <div class="vote-header">
+    <span class="vote-user"   id="vote-user-label"></span>
+    <span class="vote-counter" id="vote-count-label"></span>
+  </div>
+  <div class="prog-track">
+    <div class="prog-fill" id="prog-fill"></div>
+  </div>
+  <div class="card" id="vote-card">
+    <div class="card-img-wrap">
+      <img class="card-img" id="card-img" src="" alt="" loading="lazy" />
+      <div class="card-overlay">
+        <div class="card-overlay-name" id="card-name"></div>
+        <div class="card-overlay-job"  id="card-meta"></div>
       </div>
-      <div class="card-body">
-        <div class="card-name" id="card-name"></div>
-        <div class="card-meta" id="card-meta"></div>
-        <div class="tags"  id="card-tags"></div>
-      </div>
     </div>
-
-    <div class="vote-btns">
-      <button class="btn-vote btn-pass"  onclick="castVote('pass')">
-        ❌ <span>PASS</span>
-      </button>
-      <button class="btn-vote btn-smash" onclick="castVote('smash')">
-        💚 <span>SMASH</span>
-      </button>
+    <div class="card-body">
+      <div class="tags" id="card-tags"></div>
     </div>
   </div>
-
-  <!-- ╔══════════════════════════════════╗ -->
-  <!-- ║           DONE SCREEN            ║ -->
-  <!-- ╚══════════════════════════════════╝ -->
-  <div id="screen-done" class="screen">
-    <div class="done-icon" style="filter:drop-shadow(0 0 28px rgba(201,168,76,0.6))">🥂</div>
-    <h2 class="gold-title">Tack för din röst!</h2>
-    <p class="done-sub"><em>In Paris, anything is possible</em> 🗼</p>
+  <div class="vote-btns">
+    <button class="btn-vote btn-pass"  onclick="castVote('pass')">  ✕ <span>Pass</span></button>
+    <button class="btn-vote btn-smash" onclick="castVote('smash')"> ♥ <span>Smash</span></button>
   </div>
+</div>
 
-  <!-- ╔══════════════════════════════════╗ -->
-  <!-- ║          RESULTS SCREEN          ║ -->
-  <!-- ╚══════════════════════════════════╝ -->
-  <div id="screen-results" class="screen">
-    <div class="results-header">
-      <h2 class="gold-title">🗼 Resultaten</h2>
-      <p class="results-live">● Live</p>
-      <button class="btn-reset" onclick="resetVotes()">Nollställ alla röster</button>
-    </div>
-    <div class="results-grid" id="results-grid"></div>
+<!-- ══════════════════════════════════════════
+     DONE
+════════════════════════════════════════════ -->
+<div id="screen-done" class="screen">
+  <div class="done-wrap">
+    <div class="done-icon">🥂</div>
+    <div class="divider"></div>
+    <h2 class="done-title gold-text">Merci beaucoup!</h2>
+    <p class="done-sub">Alla dina röster är inne</p>
+    <div class="divider"></div>
+    <p class="done-stars">✦ &nbsp;✦ &nbsp;✦</p>
+    <p style="font-size:13px;color:var(--muted);font-style:italic;margin-top:10px;font-family:'Cormorant Garamond',serif;">
+      In Paris, anything is possible 🗼
+    </p>
   </div>
+</div>
 
-  <!-- ╔══════════════════════════════════════════════════════╗ -->
-  <!-- ║                      SCRIPT                          ║ -->
-  <!-- ╚══════════════════════════════════════════════════════╝ -->
-  <script>
-  // ════════════════════════════════════════════════════════════
-  //  FIREBASE CONFIG
-  //  → Gå till https://console.firebase.google.com
-  //  → Skapa projekt → Realtime Database → Kopiera config hit
-  // ════════════════════════════════════════════════════════════
-  const firebaseConfig = {
-    apiKey:            "AIzaSyB5fSX7tYD6h-O-xIrGW4UmMkH4w6levH4",
-    authDomain:        "paris-mohippa.firebaseapp.com",
-    databaseURL:       "https://paris-mohippa-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId:         "paris-mohippa",
-    storageBucket:     "paris-mohippa.firebasestorage.app",
-    messagingSenderId: "341387651129",
-    appId:             "1:341387651129:web:0b7db250c13963a12ec5e8",
-    measurementId:     "G-0R7JMN9Z0S"
-  };
+<!-- ══════════════════════════════════════════
+     RESULTS
+════════════════════════════════════════════ -->
+<div id="screen-results" class="screen">
+  <div class="results-top">
+    <p class="results-eyebrow">✦ &nbsp;Paris 2026&nbsp; ✦</p>
+    <h2 class="results-title gold-text">Resultaten</h2>
+    <div class="results-live"><span class="live-dot"></span>Live</div>
+    <button class="btn-reset" onclick="resetVotes()">↺ &nbsp;Nollställ alla röster</button>
+  </div>
+  <div class="results-grid" id="results-grid"></div>
+</div>
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════ -->
+<script>
+// Firebase
+const firebaseConfig = {
+  apiKey:            "AIzaSyB5fSX7tYD6h-O-xIrGW4UmMkH4w6levH4",
+  authDomain:        "paris-mohippa.firebaseapp.com",
+  databaseURL:       "https://paris-mohippa-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId:         "paris-mohippa",
+  storageBucket:     "paris-mohippa.firebasestorage.app",
+  messagingSenderId: "341387651129",
+  appId:             "1:341387651129:web:0b7db250c13963a12ec5e8",
+  measurementId:     "G-0R7JMN9Z0S"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-  // ════════════════════════════════════════════════════════════
-  //  KANDIDATERNA
-  //  De 3 sista (person4–6) behöver fyllas i efter att vi
-  //  läst av bilderna IMG_1110–IMG_1112.
-  // ════════════════════════════════════════════════════════════
-  const people = [
-    {
-      id:        "everett",
-      image:     "Bilder/IMG_1107.png",
-      name:      "Everett",
-      age:       26,
-      job:       "Eventmanager",
-      interests: "Fotboll & läsa böcker",
-      positives: "Driftig, ödmjuk & hjälpsam",
-      redFlags:  "Workaholic"
-    },
-    {
-      id:        "sardar",
-      image:     "Bilder/IMG_1108.png",
-      name:      "Sardar",
-      age:       26,
-      job:       "Jurist & poet",
-      interests: "Kultur, poesi & träning",
-      positives: "Känslomässigt medveten, kreativ & intelligent",
-      redFlags:  "Har sällan tid för att umgås med dig"
-    },
-    {
-      id:        "benedict",
-      image:     "Bilder/IMG_1109.png",
-      name:      "Benedict",
-      age:       26,
-      job:       "Butik & professionell dansare",
-      interests: "Dans",
-      greenFlags:"Ödmjuk, inlyssnande, kreativ",
-      redFlags:  "Får lätt icks, behöver mycket egentid"
-    },
-    {
-      id:         "sargon",
-      image:      "Bilder/IMG_1110.png",
-      name:       "Sargon",
-      age:        26,
-      job:        "Lärare",
-      interests:  "Böcker",
-      greenFlags: "Omhändertagande, bra lyssnare & ärlig",
-      redFlags:   "Kan få hård ton när han blir irriterad"
-    },
-    {
-      id:         "liam",
-      image:      "Bilder/IMG_1111.png",
-      name:       "Liam",
-      age:        26,
-      job:        "Studerar till socionom, kurator på skola",
-      interests:  "Träning & resa",
-      greenFlags: "Omtänksam & bra lyssnare",
-      redFlags:   "Kan till en början vara svartsjuk"
-    },
-    {
-      id:         "taha",
-      image:      "Bilder/IMG_1112.png",
-      name:       "Taha",
-      age:        27,
-      job:        "Biståndshandläggare",
-      interests:  "Resa",
-      greenFlags: "Ger bra råd & ställer upp",
-      redFlags:   "Hör aldrig av sig, dömande"
-    }
-  ];
+// Kandidater
+const people = [
+  { id:"everett", image:"Bilder/IMG_1107.png", name:"Everett",  age:26, job:"Eventmanager",                       interests:"Fotboll & läsa böcker",     greenFlags:"Driftig, ödmjuk & hjälpsam",                          redFlags:"Workaholic" },
+  { id:"sardar",  image:"Bilder/IMG_1108.png", name:"Sardar",   age:26, job:"Jurist & poet",                      interests:"Kultur, poesi & träning",    greenFlags:"Känslomässigt medveten, kreativ & intelligent",        redFlags:"Har sällan tid för att umgås med dig" },
+  { id:"benedict",image:"Bilder/IMG_1109.png", name:"Benedict", age:26, job:"Butik & professionell dansare",      interests:"Dans",                       greenFlags:"Ödmjuk, inlyssnande, kreativ",                         redFlags:"Får lätt icks, behöver mycket egentid" },
+  { id:"sargon",  image:"Bilder/IMG_1110.png", name:"Sargon",   age:26, job:"Lärare",                             interests:"Böcker",                     greenFlags:"Omhändertagande, bra lyssnare & ärlig",                redFlags:"Kan få hård ton när han blir irriterad" },
+  { id:"liam",    image:"Bilder/IMG_1111.png", name:"Liam",     age:26, job:"Socionom, kurator på skola",         interests:"Träning & resa",             greenFlags:"Omtänksam & bra lyssnare",                            redFlags:"Kan till en början vara svartsjuk" },
+  { id:"taha",    image:"Bilder/IMG_1112.png", name:"Taha",     age:27, job:"Biståndshandläggare",                interests:"Resa",                       greenFlags:"Ger bra råd & ställer upp",                           redFlags:"Hör aldrig av sig, dömande" }
+];
 
-  // ════════════════════════════════════════════════════════════
-  //  STATE
-  // ════════════════════════════════════════════════════════════
-  let currentUser  = "";
-  let currentIndex = 0;
+let currentUser = "", currentIndex = 0;
 
-  // ════════════════════════════════════════════════════════════
-  //  ROUTING  →  lägg ?results i URL för resultatsida
-  // ════════════════════════════════════════════════════════════
-  if (new URLSearchParams(window.location.search).has("results")) {
-    showScreen("results");
-    initResults();
-  }
+// Routing
+if (new URLSearchParams(window.location.search).has("results")) {
+  showScreen("results"); initResults();
+}
 
-  // ════════════════════════════════════════════════════════════
-  //  HELPERS
-  // ════════════════════════════════════════════════════════════
-  function showScreen(name) {
-    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-    document.getElementById("screen-" + name).classList.add("active");
-  }
+function showScreen(n) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById("screen-" + n).classList.add("active");
+}
+function safeKey(s){ return s.replace(/[.#$[\]/]/g,"_"); }
 
-  // Firebase-safe nyckel (inga . # $ [ ])
-  function safeKey(str) {
-    return str.replace(/[.#$[\]/]/g, "_");
-  }
+// Login
+document.getElementById("nameInput").addEventListener("keydown", e => { if(e.key==="Enter") startVoting(); });
+function startVoting(){
+  const name = document.getElementById("nameInput").value.trim();
+  const err  = document.getElementById("login-error");
+  if(!name){ err.textContent="Skriv in ditt namn för att fortsätta"; document.getElementById("nameInput").focus(); return; }
+  err.textContent="";
+  currentUser=name; currentIndex=0;
+  document.getElementById("vote-user-label").textContent="✦ "+name;
+  showScreen("vote"); renderCard();
+}
 
-  // ════════════════════════════════════════════════════════════
-  //  LOGIN
-  // ════════════════════════════════════════════════════════════
-  document.getElementById("nameInput").addEventListener("keydown", e => {
-    if (e.key === "Enter") startVoting();
-  });
+// Render card
+function renderCard(){
+  const p=people[currentIndex];
+  document.getElementById("card-img").src           = p.image;
+  document.getElementById("card-img").alt           = p.name;
+  document.getElementById("card-name").textContent  = `${p.name}, ${p.age}`;
+  document.getElementById("card-meta").textContent  = p.job;
+  document.getElementById("vote-count-label").textContent = `${currentIndex+1} / ${people.length}`;
+  document.getElementById("prog-fill").style.width  = `${((currentIndex+1)/people.length)*100}%`;
 
-  function startVoting() {
-    const name = document.getElementById("nameInput").value.trim();
-    const errEl = document.getElementById("login-error");
-    if (!name) {
-      errEl.textContent = "Skriv in ditt namn för att rösta!";
-      document.getElementById("nameInput").focus();
-      return;
-    }
-    errEl.textContent = "";
-    currentUser  = name;
-    currentIndex = 0;
-    document.getElementById("vote-user-label").textContent = "👋 " + name;
-    showScreen("vote");
-    renderCard();
-  }
+  const te=document.getElementById("card-tags"); te.innerHTML="";
+  const tag=(txt,cls)=>{ const t=document.createElement("span"); t.className=`tag ${cls}`; t.textContent=txt; te.appendChild(t); };
+  if(p.interests)  tag("🎯 "+p.interests,  "tag-neutral");
+  if(p.greenFlags) tag("✅ "+p.greenFlags, "tag-green");
+  if(p.redFlags)   tag("🚩 "+p.redFlags,   "tag-red");
+}
 
-  // ════════════════════════════════════════════════════════════
-  //  RENDER CARD
-  // ════════════════════════════════════════════════════════════
-  function renderCard() {
-    const p = people[currentIndex];
-    const total = people.length;
+// Cast vote
+function castVote(choice){
+  document.querySelectorAll(".btn-vote").forEach(b=>b.disabled=true);
+  const p=people[currentIndex];
+  db.ref(`votes/${p.id}/voters/${safeKey(currentUser)}`).set(choice).catch(()=>{});
+  if(choice==="smash") spawnConfetti();
 
-    document.getElementById("card-img").src = p.image;
-    document.getElementById("card-img").alt = p.name;
-    document.getElementById("card-name").textContent =
-      p.age > 0 ? `${p.name}, ${p.age}` : p.name;
-    document.getElementById("card-meta").textContent = "💼 " + p.job;
-    document.getElementById("vote-count-label").textContent =
-      `${currentIndex + 1} / ${total}`;
-    document.getElementById("prog-fill").style.width =
-      `${((currentIndex + 1) / total) * 100}%`;
+  const card=document.getElementById("vote-card");
+  card.style.transform = choice==="smash" ? "translateX(95px) rotate(10deg) scale(.9)" : "translateX(-95px) rotate(-10deg) scale(.9)";
+  card.style.opacity="0";
 
-    // Tags
-    const tagsEl = document.getElementById("card-tags");
-    tagsEl.innerHTML = "";
-    const addTag = (text, cls) => {
-      const t = document.createElement("span");
-      t.className = `tag ${cls}`;
-      t.textContent = text;
-      tagsEl.appendChild(t);
-    };
-    if (p.interests)  addTag("🎯 " + p.interests,                  "tag-neutral");
-    const pos = p.greenFlags || p.positives;
-    if (pos)          addTag("✅ " + pos,                           "tag-green");
-    if (p.redFlags)   addTag("🚩 " + p.redFlags,                   "tag-red");
-  }
-
-  // ════════════════════════════════════════════════════════════
-  //  CAST VOTE
-  // ════════════════════════════════════════════════════════════
-  function castVote(choice) {
-    // Disable buttons briefly to prevent double-tap
-    document.querySelectorAll(".btn-vote").forEach(b => b.disabled = true);
-
-    const p     = people[currentIndex];
-    const key   = safeKey(currentUser);
-    const ref   = db.ref(`votes/${p.id}/voters/${key}`);
-
-    ref.set(choice).catch(() => {/* silently ignore if offline */});
-
-    // Animate card
-    const card = document.getElementById("vote-card");
-    card.style.transform = choice === "smash"
-      ? "translateX(80px) rotate(8deg)"
-      : "translateX(-80px) rotate(-8deg)";
-    card.style.opacity = "0";
-
-    setTimeout(() => {
-      card.style.transition = "none";
-      card.style.transform  = "";
-      card.style.opacity    = "1";
-      // Re-enable transition after reset
-      requestAnimationFrame(() => {
-        card.style.transition = "";
-        document.querySelectorAll(".btn-vote").forEach(b => b.disabled = false);
-      });
-
-      currentIndex++;
-      if (currentIndex >= people.length) {
-        showScreen("done");
-      } else {
-        renderCard();
-      }
-    }, 320);
-  }
-
-  // ════════════════════════════════════════════════════════════
-  //  RESULTS (laptop/TV mode  →  ?results)
-  // ════════════════════════════════════════════════════════════
-  function initResults() {
-    const grid = document.getElementById("results-grid");
-    grid.innerHTML = "";
-
-    people.forEach(p => {
-      const card = document.createElement("div");
-      card.className = "r-card";
-      card.innerHTML = `
-        <img class="r-img" src="${p.image}" alt="${p.name}" loading="lazy" />
-        <div class="r-body">
-          <div class="r-name">${p.age > 0 ? `${p.name}, ${p.age}` : p.name}</div>
-
-          <div class="r-row">
-            <span>💚 Smash</span>
-            <strong id="sc-${p.id}">0</strong>
-          </div>
-          <div class="r-bar-track">
-            <div class="r-bar-smash" id="sb-${p.id}" style="width:0%"></div>
-          </div>
-
-          <div class="r-row">
-            <span>❌ Pass</span>
-            <strong id="pc-${p.id}">0</strong>
-          </div>
-          <div class="r-bar-track">
-            <div class="r-bar-pass" id="pb-${p.id}" style="width:0%"></div>
-          </div>
-
-          <div class="r-total"   id="tot-${p.id}">0 röster</div>
-          <div class="r-verdict" id="vrd-${p.id}"></div>
-          <div class="voters-list" id="vlist-${p.id}"></div>
-        </div>
-      `;
-      grid.appendChild(card);
-
-      // Real-time listener
-      db.ref(`votes/${p.id}/voters`).on("value", snapshot => {
-        let smash = 0, pass = 0;
-        const voterLines = [];
-        const data = snapshot.val();
-
-        if (data) {
-          Object.entries(data).forEach(([name, v]) => {
-            const display = name.replace(/_/g, " ");
-            if (v === "smash") { smash++; voterLines.push(`💚 ${display}`); }
-            else               { pass++;  voterLines.push(`❌ ${display}`); }
-          });
-        }
-
-        const total    = smash + pass;
-        const smashPct = total > 0 ? (smash / total) * 100 : 0;
-        const passPct  = total > 0 ? (pass  / total) * 100 : 0;
-
-        document.getElementById(`sc-${p.id}`).textContent   = smash;
-        document.getElementById(`pc-${p.id}`).textContent   = pass;
-        document.getElementById(`sb-${p.id}`).style.width   = smashPct + "%";
-        document.getElementById(`pb-${p.id}`).style.width   = passPct  + "%";
-        document.getElementById(`tot-${p.id}`).textContent  =
-          `${total} röst${total !== 1 ? "er" : ""}`;
-
-        let badge = "";
-        if (total > 0) {
-          if      (smash > pass) badge = `<span class="verdict-badge v-smash">💚 SMASH</span>`;
-          else if (pass > smash) badge = `<span class="verdict-badge v-pass">❌ PASS</span>`;
-          else                   badge = `<span class="verdict-badge v-tie">🤝 OAVGJORT</span>`;
-        }
-        document.getElementById(`vrd-${p.id}`).innerHTML    = badge;
-        document.getElementById(`vlist-${p.id}`).innerHTML  =
-          voterLines.length ? voterLines.join(" &nbsp;·&nbsp; ") : "";
-      });
+  setTimeout(()=>{
+    card.style.transition="none"; card.style.transform=""; card.style.opacity="1";
+    requestAnimationFrame(()=>{
+      card.style.transition="";
+      document.querySelectorAll(".btn-vote").forEach(b=>b.disabled=false);
     });
-  }
+    currentIndex++;
+    if(currentIndex>=people.length){ showScreen("done"); spawnFinale(); }
+    else renderCard();
+  },380);
+}
 
-  // ════════════════════════════════════════════════════════════
-  //  DECORATIVE PARTICLES
-  // ════════════════════════════════════════════════════════════
-  // ════════════════════════════════════════════════════════════
-  //  RESET VOTES
-  // ════════════════════════════════════════════════════════════
-  function resetVotes() {
-    if (!confirm("Är du säker på att du vill nollställa ALLA röster? Detta går inte att ångra.")) return;
-    db.ref("votes").remove()
-      .then(() => alert("Alla röster är nollställda! ✓"))
-      .catch(() => alert("Något gick fel, försök igen."));
-  }
+// Results
+function initResults(){
+  const grid=document.getElementById("results-grid"); grid.innerHTML="";
+  people.forEach(p=>{
+    const c=document.createElement("div"); c.className="r-card";
+    c.innerHTML=`
+      <div class="r-img-wrap">
+        <img class="r-img" src="${p.image}" alt="${p.name}" loading="lazy"/>
+        <div class="r-name-overlay"><div class="r-name">${p.name}, ${p.age}</div></div>
+      </div>
+      <div class="r-body">
+        <div class="r-bar-label"><span style="color:var(--green)">♥ Smash</span><strong id="sc-${p.id}" style="color:var(--green)">0</strong></div>
+        <div class="r-bar-track"><div class="r-bar-smash" id="sb-${p.id}" style="width:0%"></div></div>
+        <div class="r-bar-label"><span style="color:var(--rose)">✕ Pass</span><strong id="pc-${p.id}" style="color:var(--rose)">0</strong></div>
+        <div class="r-bar-track"><div class="r-bar-pass" id="pb-${p.id}" style="width:0%"></div></div>
+        <div class="r-total" id="tot-${p.id}">0 röster</div>
+        <div class="r-verdict" id="vrd-${p.id}"></div>
+        <div class="voters-list" id="vlist-${p.id}"></div>
+      </div>`;
+    grid.appendChild(c);
 
-  // ════════════════════════════════════════════════════════════
-  //  CHAMPAGNE BUBBLES
-  // ════════════════════════════════════════════════════════════
-  (function spawnParticles() {
-    const container = document.getElementById("particles");
-    const colors = [
-      "rgba(201,168,76,0.6)",
-      "rgba(240,208,96,0.5)",
-      "rgba(255,240,160,0.4)",
-      "rgba(232,160,176,0.4)"
-    ];
-    for (let i = 0; i < 35; i++) {
-      const el = document.createElement("div");
-      el.className = "particle";
-      const size = (Math.random() * 4 + 1.5) + "px";
-      el.style.left            = Math.random() * 100 + "vw";
-      el.style.width           = size;
-      el.style.height          = size;
-      el.style.background      = colors[Math.floor(Math.random() * colors.length)];
-      el.style.boxShadow       = `0 0 4px ${colors[0]}`;
-      el.style.animationDuration = (Math.random() * 14 + 7) + "s";
-      el.style.animationDelay    = (Math.random() * 12) + "s";
-      container.appendChild(el);
-    }
-  })();
-  </script>
+    db.ref(`votes/${p.id}/voters`).on("value",snap=>{
+      let smash=0,pass=0; const lines=[]; const data=snap.val();
+      if(data) Object.entries(data).forEach(([nm,v])=>{
+        const d=nm.replace(/_/g," ");
+        if(v==="smash"){smash++;lines.push(`♥ ${d}`);}else{pass++;lines.push(`✕ ${d}`);}
+      });
+      const tot=smash+pass, sp=tot>0?(smash/tot)*100:0, pp=tot>0?(pass/tot)*100:0;
+      document.getElementById(`sc-${p.id}`).textContent=smash;
+      document.getElementById(`pc-${p.id}`).textContent=pass;
+      document.getElementById(`sb-${p.id}`).style.width=sp+"%";
+      document.getElementById(`pb-${p.id}`).style.width=pp+"%";
+      document.getElementById(`tot-${p.id}`).textContent=`${tot} röst${tot!==1?"er":""}`;
+      let badge="";
+      if(tot>0){
+        if(smash>pass)      badge=`<span class="verdict-badge v-smash">♥ Smash</span>`;
+        else if(pass>smash) badge=`<span class="verdict-badge v-pass">✕ Pass</span>`;
+        else                badge=`<span class="verdict-badge v-tie">✦ Oavgjort</span>`;
+      }
+      document.getElementById(`vrd-${p.id}`).innerHTML=badge;
+      document.getElementById(`vlist-${p.id}`).innerHTML=lines.length?lines.join("  ·  "):"";
+    });
+  });
+}
+
+function resetVotes(){
+  if(!confirm("Är du säker på att du vill nollställa ALLA röster? Detta går inte att ångra.")) return;
+  db.ref("votes").remove().then(()=>alert("Alla röster är nollställda ✓")).catch(()=>alert("Något gick fel."));
+}
+
+// ─── CONFETTI ─────────────────────────────────────────────────
+const COLORS=["#F0D060","#FFF5C0","#C9A84C","#E8A0B0","#6EE7B7","#fff","#FFD700"];
+function burst(cx,cy,n){
+  for(let i=0;i<n;i++){
+    const el=document.createElement("div"); el.className="confetti-piece";
+    const angle=(Math.random()*360)*(Math.PI/180), dist=100+Math.random()*220;
+    el.style.setProperty("--tx",(Math.cos(angle)*dist)+"px");
+    el.style.setProperty("--ty",(Math.sin(angle)*dist-100)+"px");
+    el.style.setProperty("--r",(Math.random()*720-360)+"deg");
+    el.style.left=cx+"px"; el.style.top=cy+"px";
+    el.style.background=COLORS[Math.floor(Math.random()*COLORS.length)];
+    el.style.width=(Math.random()*9+4)+"px"; el.style.height=(Math.random()*9+4)+"px";
+    el.style.borderRadius=Math.random()>.5?"50%":"3px";
+    el.style.animationDuration=(Math.random()*.5+.55)+"s";
+    document.body.appendChild(el);
+    el.addEventListener("animationend",()=>el.remove());
+  }
+}
+function spawnConfetti(){ burst(window.innerWidth/2, window.innerHeight*.44, 55); }
+function spawnFinale(){ for(let i=0;i<6;i++) setTimeout(()=>burst(Math.random()*window.innerWidth, Math.random()*window.innerHeight*.5, 35), i*280); }
+
+// ─── STARS ────────────────────────────────────────────────────
+(function(){
+  const c=document.getElementById("stars");
+  for(let i=0;i<85;i++){
+    const s=document.createElement("div"); s.className="star";
+    const sz=Math.random()*2.5+.5;
+    s.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*72}vh;width:${sz}px;height:${sz}px;animation-duration:${Math.random()*4+2}s;animation-delay:${Math.random()*7}s;`;
+    c.appendChild(s);
+  }
+})();
+
+// ─── BUBBLES ──────────────────────────────────────────────────
+(function(){
+  const c=document.getElementById("bubbles");
+  const cols=["rgba(201,168,76,.5)","rgba(240,208,96,.4)","rgba(255,245,192,.3)","rgba(232,160,176,.3)","rgba(255,255,255,.2)"];
+  for(let i=0;i<50;i++){
+    const el=document.createElement("div"); el.className="bubble";
+    const sz=(Math.random()*5+1.5)+"px";
+    el.style.cssText=`left:${Math.random()*100}vw;width:${sz};height:${sz};background:${cols[Math.floor(Math.random()*cols.length)]};box-shadow:0 0 5px rgba(201,168,76,.3);animation-duration:${Math.random()*16+8}s;animation-delay:${Math.random()*15}s;`;
+    c.appendChild(el);
+  }
+})();
+</script>
 </body>
 </html>

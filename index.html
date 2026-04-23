@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Möhippa Paris 🗼</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+  <style>
+    /* ── RESET & BASE ───────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold:   #D4AF37;
+      --gold2:  #FFD700;
+      --bg:     #080818;
+      --card:   rgba(255,255,255,0.06);
+      --border: rgba(212,175,55,0.25);
+      --smash:  #22c55e;
+      --pass:   #ef4444;
+      --text:   #f0f0f0;
+      --muted:  rgba(255,255,255,0.45);
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212,175,55,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(80,20,120,0.15) 0%, transparent 60%);
+      min-height: 100dvh;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── SCREENS ────────────────────────────────────────────── */
+    .screen {
+      display: none;
+      min-height: 100dvh;
+      padding: 24px 16px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .screen.active { display: flex; }
+    #screen-vote.active,
+    #screen-results.active { justify-content: flex-start; }
+
+    /* ── SHARED ─────────────────────────────────────────────── */
+    .gold-title {
+      font-size: clamp(24px, 6vw, 36px);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gold), var(--gold2), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+    }
+
+    /* ── LOGIN ──────────────────────────────────────────────── */
+    .login-tower    { font-size: 72px; line-height: 1; margin-bottom: 12px; }
+    .login-subtitle { color: var(--muted); font-size: 14px; margin: 6px 0 36px; letter-spacing: 1px; }
+
+    .name-input {
+      width: 100%;
+      max-width: 320px;
+      padding: 16px 22px;
+      border-radius: 50px;
+      border: 2px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+      text-align: center;
+      transition: border-color .25s;
+      margin-bottom: 16px;
+    }
+    .name-input:focus   { border-color: var(--gold); }
+    .name-input::placeholder { color: var(--muted); }
+
+    .btn-gold {
+      width: 100%;
+      max-width: 320px;
+      padding: 16px;
+      border-radius: 50px;
+      border: none;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #0a0a18;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-gold:hover  { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(212,175,55,.35); }
+    .btn-gold:active { transform: scale(0.97); }
+
+    .login-error {
+      color: #f87171;
+      font-size: 13px;
+      margin-top: 10px;
+      min-height: 18px;
+    }
+
+    /* ── VOTE HEADER ────────────────────────────────────────── */
+    .vote-topbar {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .vote-user   { font-size: 13px; color: var(--gold); font-weight: 600; }
+    .vote-count  { font-size: 13px; color: var(--muted); }
+
+    .prog-track {
+      width: 100%;
+      max-width: 440px;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      border-radius: 3px;
+      transition: width .5s ease;
+    }
+
+    /* ── CARD ───────────────────────────────────────────────── */
+    .card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      transition: transform .3s, opacity .3s;
+    }
+    .card-img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+    .card-body  { padding: 18px 20px 20px; }
+    .card-name  { font-size: 22px; font-weight: 800; color: var(--gold2); margin-bottom: 3px; }
+    .card-meta  { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+
+    .tags       { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag {
+      padding: 5px 13px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    .tag-neutral { background: rgba(255,255,255,0.08); color: rgba(255,255,255,.75); }
+    .tag-green   { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.3); }
+    .tag-red     { background: rgba(239,68,68,.12);  color: #f87171; border: 1px solid rgba(239,68,68,.3); }
+
+    /* ── VOTE BUTTONS ───────────────────────────────────────── */
+    .vote-btns {
+      width: 100%;
+      max-width: 440px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .btn-vote {
+      padding: 20px 10px;
+      border-radius: 18px;
+      border: 2px solid;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      font-size: 28px;
+      transition: transform .15s, background .15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-vote span { font-size: 12px; font-weight: 800; letter-spacing: 2px; }
+
+    .btn-pass  { background: rgba(239,68,68,.1);  border-color: rgba(239,68,68,.45); color: #f87171; }
+    .btn-smash { background: rgba(34,197,94,.1);  border-color: rgba(34,197,94,.45); color: #4ade80; }
+    .btn-pass:active  { background: rgba(239,68,68,.35); transform: scale(.96); }
+    .btn-smash:active { background: rgba(34,197,94,.35); transform: scale(.96); }
+
+    /* ── DONE ───────────────────────────────────────────────── */
+    .done-icon { font-size: 90px; margin-bottom: 22px; }
+    .done-sub  { color: var(--muted); font-size: 15px; margin-top: 10px; }
+
+    /* ── RESULTS ────────────────────────────────────────────── */
+    .results-header { text-align: center; margin-bottom: 28px; }
+    .results-live   { font-size: 13px; color: var(--muted); margin-top: 4px; letter-spacing: 1px; }
+
+    .results-grid {
+      width: 100%;
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .r-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .r-img  {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: top center;
+    }
+    .r-body { padding: 16px; }
+    .r-name { font-size: 17px; font-weight: 700; color: var(--gold2); margin-bottom: 14px; }
+
+    .r-row  { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+    .r-bar-track {
+      background: rgba(255,255,255,0.08);
+      border-radius: 6px;
+      height: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .r-bar-smash { height:100%; background:linear-gradient(90deg,#16a34a,#4ade80); border-radius:6px; transition:width .6s ease; }
+    .r-bar-pass  { height:100%; background:linear-gradient(90deg,#b91c1c,#f87171); border-radius:6px; transition:width .6s ease; }
+
+    .r-total   { font-size: 12px; color: var(--muted); text-align: center; margin-top: 6px; }
+    .r-verdict { margin-top: 10px; text-align: center; }
+    .verdict-badge {
+      display: inline-block;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    .v-smash { background:rgba(34,197,94,.18); color:#4ade80; }
+    .v-pass  { background:rgba(239,68,68,.18);  color:#f87171; }
+    .v-tie   { background:rgba(255,215,0,.18);  color:var(--gold2); }
+
+    /* ── VOTERS LIST ────────────────────────────────────────── */
+    .voters-list { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.8; }
+
+    /* ── DECORATIVE PARTICLES ───────────────────────────────── */
+    .particles {
+      position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: -1;
+    }
+    .particle {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: var(--gold);
+      border-radius: 50%;
+      opacity: 0;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: .6; }
+      90%  { opacity: .3; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- DECORATIVE PARTICLES -->
+  <div class="particles" id="particles"></div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║          LOGIN SCREEN            ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div id="screen-login" class="screen active">
+    <div class="login-tower">🗼</div>
+    <h1 class="gold-title">Möhippa Paris</h1>
+    <p class="login-subtitle">SMASH&nbsp;&nbsp;OR&nbsp;&nbsp;PASS — PARIS EDITION</p>
+
+    <input
+      class="name-input"
+      id="nameInput"
+      type="text"
+      placeholder="Ditt namn..."
+      maxlength="30"
+      autocomplete="off"
+      autocorrect="off"
+    />
+    <button class="btn-gold" onclick="startVoting()">Börja rösta ✨</button>
+    <p class="login-error" id="login-error"></p>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║          VOTING SCREEN           ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div id="screen-vote" class="screen">
+    <div class="vote-topbar">
+      <span class="vote-user" id="vote-user-label"></span>
+      <span class="vote-count" id="vote-count-label"></span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-fill" id="prog-fill"></div>
+    </div>
+
+    <div class="card" id="vote-card">
+      <img class="card-img" id="card-img" src="" alt="" loading="lazy" />
+      <div class="card-body">
+        <div class="card-name" id="card-name"></div>
+        <div class="card-meta" id="card-meta"></div>
+        <div class="tags"  id="card-tags"></div>
+      </div>
+    </div>
+
+    <div class="vote-btns">
+      <button class="btn-vote btn-pass"  onclick="castVote('pass')">
+        ❌ <span>PASS</span>
+      </button>
+      <button class="btn-vote btn-smash" onclick="castVote('smash')">
+        💚 <span>SMASH</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║           DONE SCREEN            ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div id="screen-done" class="screen">
+    <div class="done-icon">🥂</div>
+    <h2 class="gold-title">Tack för din röst!</h2>
+    <p class="done-sub">In Paris, anything is possible 🗼</p>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║          RESULTS SCREEN          ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div id="screen-results" class="screen">
+    <div class="results-header">
+      <h2 class="gold-title">🗼 Resultaten</h2>
+      <p class="results-live">● LIVE</p>
+    </div>
+    <div class="results-grid" id="results-grid"></div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════╗ -->
+  <!-- ║                      SCRIPT                          ║ -->
+  <!-- ╚══════════════════════════════════════════════════════╝ -->
+  <script>
+  // ════════════════════════════════════════════════════════════
+  //  FIREBASE CONFIG
+  //  → Gå till https://console.firebase.google.com
+  //  → Skapa projekt → Realtime Database → Kopiera config hit
+  // ════════════════════════════════════════════════════════════
+  const firebaseConfig = {
+    apiKey:            "DIN_API_KEY",
+    authDomain:        "DITT-PROJEKT.firebaseapp.com",
+    databaseURL:       "https://DITT-PROJEKT-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId:         "DITT-PROJEKT",
+    storageBucket:     "DITT-PROJEKT.appspot.com",
+    messagingSenderId: "DIN_SENDER_ID",
+    appId:             "DIN_APP_ID"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // ════════════════════════════════════════════════════════════
+  //  KANDIDATERNA
+  //  De 3 sista (person4–6) behöver fyllas i efter att vi
+  //  läst av bilderna IMG_1110–IMG_1112.
+  // ════════════════════════════════════════════════════════════
+  const people = [
+    {
+      id:        "everett",
+      image:     "Bilder/IMG_1107.png",
+      name:      "Everett",
+      age:       26,
+      job:       "Eventmanager",
+      interests: "Fotboll & läsa böcker",
+      positives: "Driftig, ödmjuk & hjälpsam",
+      redFlags:  "Workaholic"
+    },
+    {
+      id:        "sardar",
+      image:     "Bilder/IMG_1108.png",
+      name:      "Sardar",
+      age:       26,
+      job:       "Jurist & poet",
+      interests: "Kultur, poesi & träning",
+      positives: "Känslomässigt medveten, kreativ & intelligent",
+      redFlags:  "Har sällan tid för att umgås med dig"
+    },
+    {
+      id:        "benedict",
+      image:     "Bilder/IMG_1109.png",
+      name:      "Benedict",
+      age:       26,
+      job:       "Butik & professionell dansare",
+      interests: "Dans",
+      greenFlags:"Ödmjuk, inlyssnande, kreativ",
+      redFlags:  "Får lätt icks, behöver mycket egentid"
+    },
+    // ── FYLL I NEDAN efter att du läst IMG_1110 ─────────────
+    {
+      id:        "person4",
+      image:     "Bilder/IMG_1110.png",
+      name:      "FYLL I NAMN",
+      age:       0,
+      job:       "FYLL I JOBB",
+      interests: "FYLL I INTRESSEN",
+      positives: "FYLL I POSITIVA EGENSKAPER",
+      redFlags:  "FYLL I RED FLAGS"
+    },
+    // ── FYLL I NEDAN efter att du läst IMG_1111 ─────────────
+    {
+      id:        "person5",
+      image:     "Bilder/IMG_1111.png",
+      name:      "FYLL I NAMN",
+      age:       0,
+      job:       "FYLL I JOBB",
+      interests: "FYLL I INTRESSEN",
+      positives: "FYLL I POSITIVA EGENSKAPER",
+      redFlags:  "FYLL I RED FLAGS"
+    },
+    // ── FYLL I NEDAN efter att du läst IMG_1112 ─────────────
+    {
+      id:        "person6",
+      image:     "Bilder/IMG_1112.png",
+      name:      "FYLL I NAMN",
+      age:       0,
+      job:       "FYLL I JOBB",
+      interests: "FYLL I INTRESSEN",
+      positives: "FYLL I POSITIVA EGENSKAPER",
+      redFlags:  "FYLL I RED FLAGS"
+    }
+  ];
+
+  // ════════════════════════════════════════════════════════════
+  //  STATE
+  // ════════════════════════════════════════════════════════════
+  let currentUser  = "";
+  let currentIndex = 0;
+
+  // ════════════════════════════════════════════════════════════
+  //  ROUTING  →  lägg ?results i URL för resultatsida
+  // ════════════════════════════════════════════════════════════
+  if (new URLSearchParams(window.location.search).has("results")) {
+    showScreen("results");
+    initResults();
+  }
+
+  // ════════════════════════════════════════════════════════════
+  //  HELPERS
+  // ════════════════════════════════════════════════════════════
+  function showScreen(name) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById("screen-" + name).classList.add("active");
+  }
+
+  // Firebase-safe nyckel (inga . # $ [ ])
+  function safeKey(str) {
+    return str.replace(/[.#$[\]/]/g, "_");
+  }
+
+  // ════════════════════════════════════════════════════════════
+  //  LOGIN
+  // ════════════════════════════════════════════════════════════
+  document.getElementById("nameInput").addEventListener("keydown", e => {
+    if (e.key === "Enter") startVoting();
+  });
+
+  function startVoting() {
+    const name = document.getElementById("nameInput").value.trim();
+    const errEl = document.getElementById("login-error");
+    if (!name) {
+      errEl.textContent = "Skriv in ditt namn för att rösta!";
+      document.getElementById("nameInput").focus();
+      return;
+    }
+    errEl.textContent = "";
+    currentUser  = name;
+    currentIndex = 0;
+    document.getElementById("vote-user-label").textContent = "👋 " + name;
+    showScreen("vote");
+    renderCard();
+  }
+
+  // ════════════════════════════════════════════════════════════
+  //  RENDER CARD
+  // ════════════════════════════════════════════════════════════
+  function renderCard() {
+    const p = people[currentIndex];
+    const total = people.length;
+
+    document.getElementById("card-img").src = p.image;
+    document.getElementById("card-img").alt = p.name;
+    document.getElementById("card-name").textContent =
+      p.age > 0 ? `${p.name}, ${p.age}` : p.name;
+    document.getElementById("card-meta").textContent = "💼 " + p.job;
+    document.getElementById("vote-count-label").textContent =
+      `${currentIndex + 1} / ${total}`;
+    document.getElementById("prog-fill").style.width =
+      `${((currentIndex + 1) / total) * 100}%`;
+
+    // Tags
+    const tagsEl = document.getElementById("card-tags");
+    tagsEl.innerHTML = "";
+    const addTag = (text, cls) => {
+      const t = document.createElement("span");
+      t.className = `tag ${cls}`;
+      t.textContent = text;
+      tagsEl.appendChild(t);
+    };
+    if (p.interests)  addTag("🎯 " + p.interests,                  "tag-neutral");
+    const pos = p.greenFlags || p.positives;
+    if (pos)          addTag("✅ " + pos,                           "tag-green");
+    if (p.redFlags)   addTag("🚩 " + p.redFlags,                   "tag-red");
+  }
+
+  // ════════════════════════════════════════════════════════════
+  //  CAST VOTE
+  // ════════════════════════════════════════════════════════════
+  function castVote(choice) {
+    // Disable buttons briefly to prevent double-tap
+    document.querySelectorAll(".btn-vote").forEach(b => b.disabled = true);
+
+    const p     = people[currentIndex];
+    const key   = safeKey(currentUser);
+    const ref   = db.ref(`votes/${p.id}/voters/${key}`);
+
+    ref.set(choice).catch(() => {/* silently ignore if offline */});
+
+    // Animate card
+    const card = document.getElementById("vote-card");
+    card.style.transform = choice === "smash"
+      ? "translateX(80px) rotate(8deg)"
+      : "translateX(-80px) rotate(-8deg)";
+    card.style.opacity = "0";
+
+    setTimeout(() => {
+      card.style.transition = "none";
+      card.style.transform  = "";
+      card.style.opacity    = "1";
+      // Re-enable transition after reset
+      requestAnimationFrame(() => {
+        card.style.transition = "";
+        document.querySelectorAll(".btn-vote").forEach(b => b.disabled = false);
+      });
+
+      currentIndex++;
+      if (currentIndex >= people.length) {
+        showScreen("done");
+      } else {
+        renderCard();
+      }
+    }, 320);
+  }
+
+  // ════════════════════════════════════════════════════════════
+  //  RESULTS (laptop/TV mode  →  ?results)
+  // ════════════════════════════════════════════════════════════
+  function initResults() {
+    const grid = document.getElementById("results-grid");
+    grid.innerHTML = "";
+
+    people.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "r-card";
+      card.innerHTML = `
+        <img class="r-img" src="${p.image}" alt="${p.name}" loading="lazy" />
+        <div class="r-body">
+          <div class="r-name">${p.age > 0 ? `${p.name}, ${p.age}` : p.name}</div>
+
+          <div class="r-row">
+            <span>💚 Smash</span>
+            <strong id="sc-${p.id}">0</strong>
+          </div>
+          <div class="r-bar-track">
+            <div class="r-bar-smash" id="sb-${p.id}" style="width:0%"></div>
+          </div>
+
+          <div class="r-row">
+            <span>❌ Pass</span>
+            <strong id="pc-${p.id}">0</strong>
+          </div>
+          <div class="r-bar-track">
+            <div class="r-bar-pass" id="pb-${p.id}" style="width:0%"></div>
+          </div>
+
+          <div class="r-total"   id="tot-${p.id}">0 röster</div>
+          <div class="r-verdict" id="vrd-${p.id}"></div>
+          <div class="voters-list" id="vlist-${p.id}"></div>
+        </div>
+      `;
+      grid.appendChild(card);
+
+      // Real-time listener
+      db.ref(`votes/${p.id}/voters`).on("value", snapshot => {
+        let smash = 0, pass = 0;
+        const voterLines = [];
+        const data = snapshot.val();
+
+        if (data) {
+          Object.entries(data).forEach(([name, v]) => {
+            const display = name.replace(/_/g, " ");
+            if (v === "smash") { smash++; voterLines.push(`💚 ${display}`); }
+            else               { pass++;  voterLines.push(`❌ ${display}`); }
+          });
+        }
+
+        const total    = smash + pass;
+        const smashPct = total > 0 ? (smash / total) * 100 : 0;
+        const passPct  = total > 0 ? (pass  / total) * 100 : 0;
+
+        document.getElementById(`sc-${p.id}`).textContent   = smash;
+        document.getElementById(`pc-${p.id}`).textContent   = pass;
+        document.getElementById(`sb-${p.id}`).style.width   = smashPct + "%";
+        document.getElementById(`pb-${p.id}`).style.width   = passPct  + "%";
+        document.getElementById(`tot-${p.id}`).textContent  =
+          `${total} röst${total !== 1 ? "er" : ""}`;
+
+        let badge = "";
+        if (total > 0) {
+          if      (smash > pass) badge = `<span class="verdict-badge v-smash">💚 SMASH</span>`;
+          else if (pass > smash) badge = `<span class="verdict-badge v-pass">❌ PASS</span>`;
+          else                   badge = `<span class="verdict-badge v-tie">🤝 OAVGJORT</span>`;
+        }
+        document.getElementById(`vrd-${p.id}`).innerHTML    = badge;
+        document.getElementById(`vlist-${p.id}`).innerHTML  =
+          voterLines.length ? voterLines.join(" &nbsp;·&nbsp; ") : "";
+      });
+    });
+  }
+
+  // ════════════════════════════════════════════════════════════
+  //  DECORATIVE PARTICLES
+  // ════════════════════════════════════════════════════════════
+  (function spawnParticles() {
+    const container = document.getElementById("particles");
+    for (let i = 0; i < 25; i++) {
+      const el = document.createElement("div");
+      el.className = "particle";
+      el.style.left     = Math.random() * 100 + "vw";
+      el.style.width    = (Math.random() * 3 + 1) + "px";
+      el.style.height   = el.style.width;
+      el.style.animationDuration = (Math.random() * 12 + 8) + "s";
+      el.style.animationDelay   = (Math.random() * 10) + "s";
+      container.appendChild(el);
+    }
+  })();
+  </script>
+</body>
+</html>
